@@ -1,0 +1,61 @@
+{
+  "id": "2025-08-16-oakland",
+  "date": "2025-08-16",
+  "time": "7:00 PM PST",
+  "location": "Oakland, CA",
+  "venue": "Oakland Arena",
+  "address": "7000 Coliseum Way, Oakland, CA 94621",
+  "opponent": {
+    "name": "TBA",
+    "record": "TBA",
+    "nickname": ""
+  },
+  "title": "Homecoming Fight",
+  "subtitle": "The Raw One Returns to Oakland",
+  "ticketInfo": {
+    "onSaleDate": "2025-06-01",
+    "priceRange": {
+      "min": 50,
+      "max": 500
+    },
+    "vipPackages": true,
+    "purchaseUrl": "",
+    "vendorName": "Ticketmaster"
+  },
+  "promotion": {
+    "promoter": "Premier Boxing Champions",
+    "broadcaster": "FOX Sports",
+    "ppv": false
+  },
+  "files": {
+    "fightCard": "",
+    "pressRelease": "",
+    "poster": "",
+    "mediaKit": ""
+  },
+  "description": "Kumar 'The Raw One' Prescod returns to his hometown of Oakland for a special homecoming fight. After starting his professional career with three straight knockouts, Kumar brings his explosive style back to the Bay Area for what promises to be an electric night of boxing.",
+  "highlights": [
+    "Kumar's first professional fight in Oakland",
+    "Homecoming celebration for the Bay Area's rising star",
+    "Special meet & greet for VIP ticket holders",
+    "Youth boxing clinic on fight week"
+  ],
+  "specialEvents": [
+    {
+      "name": "Youth Boxing Clinic",
+      "date": "2025-08-14",
+      "time": "3:00 PM",
+      "location": "Oakland Boxing Gym",
+      "description": "Kumar gives back to the community with a free youth boxing clinic"
+    },
+    {
+      "name": "VIP Meet & Greet",
+      "date": "2025-08-16",
+      "time": "5:00 PM",
+      "location": "Oakland Arena VIP Lounge",
+      "description": "Exclusive meet and greet for VIP ticket holders"
+    }
+  ],
+  "status": "announced",
+  "lastUpdated": "2025-01-15"
+}

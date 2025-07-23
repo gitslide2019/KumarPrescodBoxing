@@ -1,0 +1,55 @@
+{
+  "testRun": {
+    "timestamp": "2025-07-23T20:13:32.105Z",
+    "totalTests": 0,
+    "passedTests": 0,
+    "failedTests": 0
+  },
+  "boxingCriticalMetrics": {
+    "fightRecordPerformance": null,
+    "trainingMediaPerformance": null,
+    "mobileBoxingExperience": null,
+    "ticketPurchaseFlow": null
+  },
+  "coreWebVitals": null,
+  "crossBrowserConsistency": {
+    "chromium-desktop": {
+      "totalTests": 0,
+      "passRate": 0,
+      "avgDuration": 0
+    },
+    "firefox-desktop": {
+      "totalTests": 0,
+      "passRate": 0,
+      "avgDuration": 0
+    },
+    "webkit-desktop": {
+      "totalTests": 0,
+      "passRate": 0,
+      "avgDuration": 0
+    },
+    "mobile-chrome": {
+      "totalTests": 0,
+      "passRate": 0,
+      "avgDuration": 0
+    },
+    "mobile-safari": {
+      "totalTests": 0,
+      "passRate": 0,
+      "avgDuration": 0
+    }
+  },
+  "accessibilityScores": {
+    "totalAccessibilityTests": 0,
+    "passRate": 0,
+    "boxingStatsAccessibility": 0
+  },
+  "recommendations": [
+    {
+      "type": "mobile",
+      "priority": "critical",
+      "issue": "Mobile experience issues - critical for boxing fans watching fights on mobile",
+      "solution": "Improve mobile responsive design, optimize touch interactions for fight statistics"
+    }
+  ]
+}

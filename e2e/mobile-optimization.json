@@ -1,0 +1,12 @@
+{
+  "deviceCoverage": {
+    "iPhone": 0,
+    "Android": 0,
+    "tablet": 0
+  },
+  "boxingFanPriorities": {
+    "fightScheduleVisibility": "mobile_first_design",
+    "ticketPurchaseFlow": "touch_optimized",
+    "videoPlayback": "mobile_bandwidth_optimized"
+  }
+}

@@ -1,0 +1,15 @@
+# Build artifacts
+build/
+dist/
+coverage/
+
+# Node modules
+node_modules/
+
+# Generated files
+*.generated.*
+*.min.*
+
+# Package files
+package-lock.json
+yarn.lock

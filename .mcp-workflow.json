@@ -1,0 +1,98 @@
+{
+  "development_workflow": {
+    "testing": {
+      "frameworks": ["jest", "react-testing-library", "cypress"],
+      "coverage_threshold": 80,
+      "test_types": ["unit", "integration", "e2e", "accessibility"],
+      "mcp_integration": {
+        "playwright": {
+          "enabled": true,
+          "browsers": ["chromium", "firefox", "webkit"],
+          "viewport_sizes": [
+            {"width": 390, "height": 844, "name": "mobile"},
+            {"width": 768, "height": 1024, "name": "tablet"}, 
+            {"width": 1920, "height": 1080, "name": "desktop"}
+          ]
+        },
+        "accessibility_scanner": {
+          "enabled": true,
+          "rules": "wcag2a",
+          "auto_fix": false
+        }
+      }
+    },
+    "deployment": {
+      "environments": ["development", "staging", "production"],
+      "providers": {
+        "primary": "vercel",
+        "backup": "netlify"
+      },
+      "pre_deploy_checks": [
+        "npm run build",
+        "npm run test",
+        "npm run lint",
+        "lighthouse-ci"
+      ],
+      "post_deploy_validation": [
+        "smoke_tests",
+        "performance_metrics",
+        "accessibility_audit"
+      ]
+    },
+    "performance": {
+      "monitoring": {
+        "web_vitals": true,
+        "error_tracking": "sentry",
+        "analytics": "google_analytics_4"
+      },
+      "optimization": {
+        "bundle_analysis": true,
+        "image_optimization": true,
+        "code_splitting": true,
+        "lazy_loading": true
+      }
+    }
+  },
+  "boxing_workflow": {
+    "content_pipeline": {
+      "fight_updates": {
+        "sources": ["manual_input", "social_media", "press_releases"],
+        "auto_publish": false,
+        "approval_required": true
+      },
+      "training_logs": {
+        "daily_updates": true,
+        "photo_processing": "auto",
+        "video_highlights": "manual"
+      }
+    },
+    "fan_engagement": {
+      "ticket_sales": {
+        "integration": "stripe",
+        "inventory_tracking": true,
+        "waiting_list": true
+      },
+      "merchandise": {
+        "inventory_sync": true,
+        "auto_restock_alerts": true
+      }
+    }
+  },
+  "automation": {
+    "git_hooks": {
+      "pre_commit": ["lint", "type_check", "test_staged"],
+      "pre_push": ["build", "test", "security_scan"]
+    },
+    "ci_cd": {
+      "trigger": "push_to_main",
+      "steps": [
+        "install_dependencies",
+        "run_tests",
+        "build_application", 
+        "deploy_staging",
+        "run_e2e_tests",
+        "deploy_production"
+      ]
+    }
+  }
+}

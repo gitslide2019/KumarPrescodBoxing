@@ -1,0 +1,57 @@
+{
+  "project": {
+    "name": "Kumar Prescod Boxing Website",
+    "type": "react-typescript",
+    "framework": "react",
+    "language": "typescript",
+    "build_tool": "react-scripts",
+    "styling": "tailwindcss",
+    "testing": "jest",
+    "deployment": "static"
+  },
+  "mcp": {
+    "enabled_servers": [
+      "sequential-thinking",
+      "context7", 
+      "magic",
+      "playwright",
+      "github",
+      "filesystem",
+      "fetch"
+    ],
+    "project_specific": {
+      "stripe": {
+        "command": "npx",
+        "args": ["@modelcontextprotocol/server-stripe"],
+        "env": {
+          "STRIPE_SECRET_KEY": "${STRIPE_SECRET_KEY}"
+        },
+        "description": "Handle ticket sales and merchandise payments"
+      },
+      "firebase": {
+        "command": "npx", 
+        "args": ["@modelcontextprotocol/server-firebase"],
+        "env": {
+          "FIREBASE_PROJECT_ID": "${FIREBASE_PROJECT_ID}",
+          "FIREBASE_PRIVATE_KEY": "${FIREBASE_PRIVATE_KEY}"
+        },
+        "description": "User authentication and data storage"
+      }
+    }
+  },
+  "development": {
+    "commands": {
+      "start": "npm start",
+      "build": "npm run build",
+      "test": "npm test",
+      "lint": "npm run lint",
+      "format": "npm run format"
+    },
+    "ports": {
+      "dev_server": 3000,
+      "test_server": 3001
+    }
+  },
+  "domains": ["boxing", "sports", "react", "typescript", "e-commerce"],
+  "priorities": ["performance", "accessibility", "user_experience", "security"]
+}

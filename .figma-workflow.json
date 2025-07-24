@@ -1,0 +1,191 @@
+{
+  "figma_mcp_workflow": {
+    "server_config": {
+      "url": "http://127.0.0.1:3845/sse",
+      "protocol": "sse",
+      "status": "active"
+    },
+    "boxing_components": {
+      "fight_promotion": {
+        "components": [
+          "FightPoster",
+          "FightCard", 
+          "EventBanner",
+          "CountdownTimer",
+          "VenueInfo"
+        ],
+        "design_tokens": [
+          "boxing-red",
+          "championship-gold", 
+          "knockout-black",
+          "victory-gradient"
+        ],
+        "typography": [
+          "fight-title-bold",
+          "fighter-name-display",
+          "event-details-medium"
+        ]
+      },
+      "fighter_profiles": {
+        "components": [
+          "FighterCard",
+          "StatDisplay",
+          "RecordSummary",
+          "ProfileImage",
+          "AchievementBadge"
+        ],
+        "data_structure": {
+          "name": "string",
+          "record": "object",
+          "weight_class": "string",
+          "achievements": "array",
+          "stats": "object"
+        }
+      },
+      "training_content": {
+        "components": [
+          "TrainingGrid",
+          "ProgressChart",
+          "WorkoutCard",
+          "VideoPlayer",
+          "ScheduleCalendar"
+        ],
+        "media_integration": [
+          "optimized_images",
+          "video_thumbnails",
+          "progress_animations"
+        ]
+      },
+      "fan_engagement": {
+        "components": [
+          "TicketPurchase",
+          "MerchandiseGrid",
+          "SocialFeed",
+          "NewsCard",
+          "ContactForm"
+        ],
+        "interactive_elements": [
+          "purchase_buttons",
+          "share_widgets",
+          "comment_sections",
+          "notification_toasts"
+        ]
+      }
+    },
+    "design_system": {
+      "color_palette": {
+        "primary": {
+          "boxing_red": "#DC2626",
+          "championship_gold": "#F59E0B",
+          "knockout_black": "#1F2937",
+          "victory_white": "#FFFFFF"
+        },
+        "semantic": {
+          "success": "#10B981",
+          "warning": "#F59E0B", 
+          "error": "#EF4444",
+          "info": "#3B82F6"
+        },
+        "gradients": {
+          "hero_gradient": "linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)",
+          "victory_gradient": "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)"
+        }
+      },
+      "typography": {
+        "headings": {
+          "h1": "font-family: 'Inter', sans-serif; font-weight: 900; font-size: 3.5rem;",
+          "h2": "font-family: 'Inter', sans-serif; font-weight: 800; font-size: 2.5rem;",
+          "h3": "font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.875rem;"
+        },
+        "body": {
+          "large": "font-family: 'Inter', sans-serif; font-weight: 400; font-size: 1.125rem;",
+          "medium": "font-family: 'Inter', sans-serif; font-weight: 400; font-size: 1rem;",
+          "small": "font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.875rem;"
+        },
+        "special": {
+          "fight_title": "font-family: 'Bebas Neue', cursive; font-weight: 700; letter-spacing: 0.1em;",
+          "stats_number": "font-family: 'Inter', sans-serif; font-weight: 900; font-variant-numeric: tabular-nums;"
+        }
+      },
+      "spacing": {
+        "xs": "0.25rem",
+        "sm": "0.5rem", 
+        "md": "1rem",
+        "lg": "1.5rem",
+        "xl": "2rem",
+        "2xl": "3rem",
+        "3xl": "4rem"
+      },
+      "breakpoints": {
+        "mobile": "390px",
+        "tablet": "768px",
+        "desktop": "1024px",
+        "wide": "1440px"
+      }
+    },
+    "component_generation": {
+      "react_config": {
+        "typescript": true,
+        "styled_components": false,
+        "tailwind": true,
+        "prop_types": "typescript_interfaces"
+      },
+      "naming_conventions": {
+        "components": "PascalCase",
+        "props": "camelCase",
+        "css_classes": "kebab-case",
+        "files": "kebab-case"
+      },
+      "code_standards": {
+        "accessibility": "wcag_2.1_aa",
+        "responsive": "mobile_first",
+        "performance": "lazy_loading",
+        "seo": "semantic_markup"
+      }
+    },
+    "automation_rules": {
+      "auto_generate": [
+        "component_props_from_variants",
+        "responsive_breakpoints",
+        "accessibility_attributes",
+        "typescript_interfaces"
+      ],
+      "optimization": [
+        "image_compression",
+        "svg_optimization", 
+        "css_purging",
+        "bundle_splitting"
+      ],
+      "validation": [
+        "design_token_consistency",
+        "component_naming",
+        "accessibility_compliance",
+        "responsive_behavior"
+      ]
+    }
+  },
+  "workflow_commands": {
+    "extract_component": "Extract {component_name} from Figma and generate React TypeScript component with Tailwind styling",
+    "update_design_tokens": "Update design system tokens from Figma and sync with Tailwind config",
+    "generate_variants": "Generate all component variants from Figma design system",
+    "optimize_assets": "Extract and optimize all images/icons from Figma design",
+    "create_responsive": "Generate responsive component with mobile-first approach"
+  },
+  "integration_points": {
+    "magic_server": {
+      "enhanced_generation": true,
+      "ai_suggestions": true,
+      "code_optimization": true
+    },
+    "context7_server": {
+      "react_patterns": true,
+      "accessibility_guidelines": true,
+      "performance_best_practices": true
+    },
+    "project_filesystem": {
+      "component_directory": "src/components/boxing/",
+      "design_tokens": "src/styles/design-tokens.ts",
+      "type_definitions": "src/types/boxing.ts"
+    }
+  }
+}

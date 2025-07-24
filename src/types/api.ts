@@ -19,6 +19,13 @@ import type {
   MetricData,
   Achievement,
 } from './index';
+import type {
+  ContactMessage,
+  ContactFormData,
+  InquiryType,
+  ContactStatus,
+  ContactMessageFilters,
+} from './contact';
 
 // Base API Response Structure
 export interface BaseApiResponse {
@@ -639,3 +646,113 @@ export const API_ERROR_CODES = {
   EXPIRED_TOKEN: 'EXPIRED_TOKEN',
   INSUFFICIENT_PERMISSIONS: 'INSUFFICIENT_PERMISSIONS',
 } as const;
+
+// Contact API Types
+export interface ContactMessageResponse extends ApiResponse<ContactMessage> {}
+export interface ContactMessagesResponse extends ApiResponse<ContactMessage[]> {}
+
+export interface CreateContactMessageRequest {
+  name: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  message: string;
+  inquiryType: InquiryType;
+  ipAddress?: string;
+  userAgent?: string;
+}
+
+export interface UpdateContactMessageRequest {
+  status?: ContactStatus;
+  adminNotes?: string;
+  responseDate?: Timestamp;
+}
+
+export interface ContactMessageListRequest extends BaseListRequest {
+  status?: ContactStatus;
+  inquiryType?: InquiryType;
+  priority?: 'high' | 'medium' | 'low';
+  dateRange?: {
+    start: Timestamp;
+    end: Timestamp;
+  };
+  search?: string; // Search in name, email, subject, or message
+}
+
+export interface ContactSubmissionRequest extends CreateContactMessageRequest {
+  // Additional frontend-specific fields
+  honeypot?: string; // For spam protection
+  timestamp?: Timestamp; // Form load timestamp for analytics
+  formVersion?: string; // For A/B testing
+}
+
+export interface ContactSubmissionResponse extends ApiResponse<{
+  message: ContactMessage;
+  confirmationId: string;
+  estimatedResponseTime: string;
+}> {}
+
+// Contact Analytics API Types
+export interface ContactAnalyticsResponse extends ApiResponse<{
+  totalMessages: number;
+  messagesThisWeek: number;
+  messagesThisMonth: number;
+  averageResponseTime: number; // in hours
+  messagesByStatus: Record<ContactStatus, number>;
+  messagesByInquiryType: Record<InquiryType, number>;
+  responseTimesByInquiryType: Record<InquiryType, number>;
+  topInquiryTypes: Array<{
+    type: InquiryType;
+    count: number;
+    percentage: number;
+  }>;
+}> {}
+
+export interface ContactAnalyticsRequest {
+  dateRange: {
+    start: Timestamp;
+    end: Timestamp;
+  };
+  granularity?: 'day' | 'week' | 'month';
+  includeSpam?: boolean;
+}
+
+// Bulk Operations for Contact Messages
+export interface BulkUpdateContactMessagesRequest extends BatchRequest<UpdateContactMessageRequest> {
+  messageIds: ID[];
+  action: 'mark_read' | 'mark_resolved' | 'mark_spam' | 'archive' | 'delete';
+  adminNotes?: string;
+}
+
+export interface BulkUpdateContactMessagesResponse extends BatchResponse<ContactMessage> {}
+
+// Contact Form Validation Response
+export interface ContactFormValidationResponse extends ApiResponse<{
+  isValid: boolean;
+  errors: Record<string, string[]>;
+  suggestions?: Record<string, string>;
+}> {}
+
+export interface ContactFormValidationRequest {
+  formData: ContactFormData;
+  skipEmailValidation?: boolean;
+  skipPhoneValidation?: boolean;
+}
+
+// Export Report Types
+export interface ContactExportRequest {
+  format: 'csv' | 'xlsx' | 'json';
+  filters?: ContactMessageFilters;
+  fields?: Array<keyof ContactMessage>;
+  dateRange: {
+    start: Timestamp;
+    end: Timestamp;
+  };
+}
+
+export interface ContactExportResponse extends ApiResponse<{
+  downloadUrl: string;
+  expiresAt: Timestamp;
+  recordCount: number;
+  fileSize: number; // in bytes
+}> {}

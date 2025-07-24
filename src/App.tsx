@@ -26,6 +26,7 @@ const Shop = lazy(() => import('./pages/Shop'));
 const Podcast = lazy(() => import('./pages/Podcast'));
 const Journey = lazy(() => import('./pages/Journey'));
 const Sponsors = lazy(() => import('./pages/Sponsors'));
+const Contact = lazy(() => import('./pages/Contact'));
 const TicketCheckout = lazy(() => import('./pages/TicketCheckout'));
 const ShopCheckout = lazy(() => import('./pages/ShopCheckout'));
 const MemberDashboard = lazy(() => import('./pages/member/MemberDashboard'));
@@ -163,6 +164,7 @@ function App() {
         <Header />
         <Breadcrumbs />
         
+<<<<<<< HEAD
         <main id="main-content" role="main">
           <LazyErrorBoundary>
             <Routes>
@@ -246,6 +248,31 @@ function App() {
               } />
             </Routes>
           </LazyErrorBoundary>
+=======
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/fights" element={<Fights />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/podcast" element={<Podcast />} />
+            <Route path="/journey" element={<Journey />} />
+            <Route path="/sponsors" element={<Sponsors />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/tickets/checkout" element={<TicketCheckout />} />
+            <Route path="/shop/checkout" element={<ShopCheckout />} />
+            <Route path="/member" element={
+              <ProtectedRoute requireMember={true}>
+                <MemberDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin" element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+          </Routes>
+>>>>>>> 59989cf38b3b271b1aaa048010bd83a5039798b5
         </main>
         
         <Footer />

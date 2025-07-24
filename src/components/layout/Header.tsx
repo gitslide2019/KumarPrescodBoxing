@@ -32,6 +32,7 @@ const Header: React.FC = () => {
     { name: 'Podcast', href: '/podcast' },
     { name: 'Journey', href: '/journey' },
     { name: 'Sponsors', href: '/sponsors' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   const socialLinks = [

@@ -1,0 +1,75 @@
+{
+  "media_optimization": {
+    "images": {
+      "source_directories": [
+        "public/images/training",
+        "public/images/fights", 
+        "public/images/gallery",
+        "public/images/portraits"
+      ],
+      "optimization": {
+        "formats": ["webp", "avif", "jpg"],
+        "sizes": [400, 800, 1200, 1920],
+        "quality": 85,
+        "progressive": true
+      },
+      "naming_convention": "{category}-{timestamp}-{size}.{format}"
+    },
+    "videos": {
+      "source_directories": [
+        "public/videos/training",
+        "public/videos/fights",
+        "public/videos/promotional"
+      ],
+      "optimization": {
+        "formats": ["mp4", "webm"],
+        "qualities": ["720p", "1080p", "1440p"],
+        "compression": "h264",
+        "thumbnails": true
+      }
+    }
+  },
+  "asset_management": {
+    "cdn_settings": {
+      "provider": "cloudflare",
+      "base_url": "https://cdn.kumarprescod.com",
+      "cache_ttl": 86400
+    },
+    "compression": {
+      "auto_optimize": true,
+      "lazy_loading": true,
+      "responsive_images": true
+    }
+  },
+  "mcp_servers": {
+    "image_processing": {
+      "stability_ai": {
+        "enabled": true,
+        "features": ["upscaling", "background_removal", "enhancement"]
+      },
+      "recraft": {
+        "enabled": false,
+        "features": ["vectorization", "logo_generation"]
+      }
+    },
+    "file_management": {
+      "filesystem": {
+        "enabled": true,
+        "watch_directories": ["public/images", "public/videos"],
+        "auto_optimize": true
+      }
+    }
+  },
+  "boxing_specific": {
+    "fight_media": {
+      "categories": ["training", "weigh-in", "fight-night", "post-fight"],
+      "required_metadata": ["date", "opponent", "venue", "result"],
+      "auto_tagging": true
+    },
+    "training_media": {
+      "categories": ["daily-routine", "technique", "conditioning", "sparring"],
+      "progression_tracking": true,
+      "before_after_comparison": true
+    }
+  }
+}

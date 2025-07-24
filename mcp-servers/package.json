@@ -1,0 +1,27 @@
+{
+  "name": "kumar-prescod-mcp-servers",
+  "version": "1.0.0",
+  "description": "Custom MCP servers for Kumar Prescod Boxing website",
+  "main": "boxing-stats.js",
+  "scripts": {
+    "start": "node boxing-stats.js",
+    "dev": "nodemon boxing-stats.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server-sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0",
+    "jest": "^29.0.0"
+  },
+  "keywords": [
+    "mcp",
+    "boxing", 
+    "sports",
+    "statistics",
+    "kumar-prescod"
+  ],
+  "author": "Kumar Prescod Team",
+  "license": "MIT"
+}

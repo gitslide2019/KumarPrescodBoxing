@@ -1,0 +1,369 @@
+/**
+ * Boxing-themed Component Styles
+ * Custom CSS for advanced boxing components
+ */
+
+/* Boxing Color Variables */
+:root {
+  --boxing-red: #DC2626;
+  --championship-gold: #F59E0B;
+  --knockout-black: #1F2937;
+  --victory-white: #FFFFFF;
+  
+  /* Boxing gradients */
+  --gradient-hero: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+  --gradient-victory: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  --gradient-knockout: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+  
+  /* Boxing shadows */
+  --shadow-boxing: 0 8px 32px rgba(220, 38, 38, 0.12);
+  --shadow-gold: 0 8px 32px rgba(245, 158, 11, 0.12);
+  --shadow-knockout: 0 8px 32px rgba(31, 41, 55, 0.25);
+}
+
+/* Champion Button Styles */
+.btn-champion {
+  @apply bg-gradient-to-r from-boxing_red to-championship_gold;
+  @apply text-white font-bold;
+  @apply px-8 py-4 rounded-xl;
+  @apply shadow-boxing hover:shadow-gold;
+  @apply transition-all duration-300;
+  @apply border-0;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-champion:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-gold);
+}
+
+.btn-champion:active {
+  transform: translateY(0);
+}
+
+/* Boxing Ring Animation */
+@keyframes ringPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+.ring-pulse {
+  animation: ringPulse 3s ease-in-out infinite;
+}
+
+/* Knockout Effect */
+@keyframes knockout {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: scale(1.1) rotate(-5deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(0.95) rotate(5deg);
+    opacity: 0.6;
+  }
+  75% {
+    transform: scale(1.05) rotate(-2deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.knockout-animation {
+  animation: knockout 1s ease-in-out;
+}
+
+/* Championship Glow Effect */
+@keyframes championshipGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.6);
+  }
+}
+
+.championship-glow {
+  animation: championshipGlow 2s ease-in-out infinite;
+}
+
+/* Training Intensity Indicators */
+.intensity-low {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+}
+
+.intensity-medium {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+}
+
+.intensity-high {
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+}
+
+.intensity-extreme {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+  box-shadow: 0 4px 16px rgba(220, 38, 38, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.intensity-extreme::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: extremeFlash 2s ease-in-out infinite;
+}
+
+@keyframes extremeFlash {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Fight Poster Card Styles */
+.fight-poster-card {
+  position: relative;
+  background: linear-gradient(145deg, #1F2937 0%, #111827 100%);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+  transition: all 0.3s ease;
+}
+
+.fight-poster-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-boxing);
+  border-color: rgba(245, 158, 11, 0.5);
+}
+
+.fight-poster-card .vs-indicator {
+  background: conic-gradient(from 0deg, var(--boxing-red), var(--championship-gold), var(--boxing-red));
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Countdown Timer Styles */
+.countdown-digit {
+  background: rgba(31, 41, 55, 0.8);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+  transition: all 0.3s ease;
+}
+
+.countdown-digit:hover {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+  transform: scale(1.05);
+}
+
+/* Training Stats Widget Styles */
+.training-widget {
+  background: linear-gradient(145deg, #1F2937 0%, #111827 100%);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+  transition: all 0.3s ease;
+}
+
+.training-widget:hover {
+  box-shadow: var(--shadow-boxing);
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+.training-stat-card {
+  background: rgba(31, 41, 55, 0.5);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+.training-stat-card:hover {
+  border-color: rgba(245, 158, 11, 0.5);
+  transform: translateY(-2px);
+  background: rgba(245, 158, 11, 0.05);
+}
+
+/* Progress Bar Animation */
+.progress-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: progressShine 2s ease-in-out infinite;
+}
+
+@keyframes progressShine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Fighter Spotlight Styles */
+.fighter-spotlight {
+  background: linear-gradient(145deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.8) 100%);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+  transition: all 0.3s ease;
+}
+
+.fighter-spotlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--boxing-red), var(--championship-gold));
+  animation: spotlightBeam 3s ease-in-out infinite;
+}
+
+@keyframes spotlightBeam {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Achievement Badge Styles */
+.achievement-badge {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  transition: all 0.3s ease;
+}
+
+.achievement-badge:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(220, 38, 38, 0.08) 100%);
+  transform: translateY(-2px);
+}
+
+.achievement-badge.highlighted {
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.15);
+}
+
+/* Enhanced Button Hover Effects */
+.btn-enhanced {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-enhanced:hover::before {
+  left: 100%;
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+  .fight-poster-card {
+    width: 100%;
+    max-width: 350px;
+  }
+  
+  .training-widget {
+    padding: 1rem;
+  }
+  
+  .btn-champion {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .countdown-digit {
+    padding: 0.5rem;
+  }
+}
+
+/* Dark Theme Enhancements */
+@media (prefers-color-scheme: dark) {
+  .fight-poster-card,
+  .training-widget,
+  .training-stat-card {
+    background: linear-gradient(145deg, #0F172A 0%, #020617 100%);
+  }
+  
+  .fighter-spotlight {
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.8) 0%, rgba(2, 6, 23, 0.8) 100%);
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .btn-champion {
+    border: 2px solid var(--championship-gold);
+  }
+  
+  .fight-poster-card,
+  .training-widget {
+    border: 2px solid rgba(245, 158, 11, 0.5);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .knockout-animation,
+  .championship-glow,
+  .ring-pulse,
+  .vs-indicator,
+  .progress-bar::after,
+  .fighter-spotlight::before,
+  .intensity-extreme::after {
+    animation: none;
+  }
+  
+  .fight-poster-card:hover,
+  .training-stat-card:hover,
+  .achievement-badge:hover {
+    transform: none;
+  }
+}

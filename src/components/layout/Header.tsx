@@ -81,9 +81,21 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header
-      className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-amber-900 via-red-900 to-amber-900 shadow-xl"
-    >
+    <>
+      {/* Skip to main content link for screen readers */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-primary-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg transition-all duration-200"
+        aria-label="Skip to main content"
+      >
+        Skip to main content
+      </a>
+      
+      <header
+        className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-amber-900 via-red-900 to-amber-900 shadow-xl"
+        role="banner"
+        aria-label="Kumar Prescod Boxing website navigation"
+      >
       <div className="container-max">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
@@ -99,12 +111,16 @@ const Header: React.FC = () => {
               <h1 className="text-xl lg:text-2xl font-black text-white drop-shadow-lg">
                 Kumar <span className="ring-text">Prescod</span>
               </h1>
-              <p className="text-xs text-gold-300 font-semibold">Professional Boxer</p>
+              <p className="text-xs text-gold-high-contrast font-semibold">Professional Boxer</p>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-2">
+          <nav 
+            className="hidden lg:flex items-center space-x-2"
+            role="navigation"
+            aria-label="Main navigation"
+          >
             {navigation.map((item, index) => (
               <motion.div
                 key={item.name}
@@ -214,6 +230,9 @@ const Header: React.FC = () => {
           <button
             className="lg:hidden p-2 rounded-md transition-colors duration-200 text-white hover:text-primary-300 hover:bg-white/10"
             onClick={() => setIsOpen(!isOpen)}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
+            aria-label={isOpen ? "Close mobile menu" : "Open mobile menu"}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -227,6 +246,9 @@ const Header: React.FC = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               className="lg:hidden bg-gradient-to-b from-amber-800 to-red-800 border-t border-gold-400/30"
+              id="mobile-menu"
+              role="navigation"
+              aria-label="Mobile navigation menu"
             >
               <div className="px-4 py-6 space-y-2">
                 {navigation.map((item, index) => (
@@ -322,6 +344,7 @@ const Header: React.FC = () => {
         onClose={() => setShowLoginModal(false)} 
       />
     </header>
+    </>
   );
 };
 

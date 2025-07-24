@@ -2,7 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Clock, Ticket, Star, Gift, Download, ExternalLink, ArrowRight } from 'lucide-react';
 import { useAnalytics } from '../../contexts/AnalyticsContext';
+import { useAuth } from '../../contexts/AuthContext';
 import CountdownTimer from '../common/CountdownTimer';
+import { 
+  generateTrackedPayPalUrl, 
+  trackTicketIntent, 
+  TICKET_SOURCES, 
+  TICKET_TYPES, 
+  COMPONENTS, 
+  PAGES,
+  type TicketTrackingData 
+} from '../../utils/ticketTracking';
 
 interface FightInfo {
   id: string;
@@ -65,7 +75,13 @@ const HomecomingFight: React.FC<HomecomingFightProps> = ({
 }) => {
   const [fightInfo, setFightInfo] = useState<FightInfo | null>(null);
   const [timeUntilFight, setTimeUntilFight] = useState<string>('');
-  const { trackEvent } = useAnalytics();
+  const { 
+    trackEvent, 
+    trackTicketPurchaseIntent, 
+    trackTicketPurchaseSource, 
+    trackTicketPurchaseFunnel 
+  } = useAnalytics();
+  const { user } = useAuth();
 
   useEffect(() => {
     // Load fight information
@@ -101,10 +117,28 @@ const HomecomingFight: React.FC<HomecomingFightProps> = ({
   }, [fightInfo]);
 
   const handleTicketClick = () => {
+    const trackingData: TicketTrackingData = {
+      source: TICKET_SOURCES.HOMECOMING_FIGHT,
+      component: COMPONENTS.HOMECOMING_FIGHT,
+      page: PAGES.HOME,
+      ticketType: TICKET_TYPES.GENERAL,
+      price: 105,
+      membershipTier: user?.membershipTier
+    };
+
+    // Track the ticket purchase intent
+    trackTicketIntent(trackingData, {
+      trackTicketPurchaseIntent,
+      trackTicketPurchaseSource,
+      trackTicketPurchaseFunnel
+    });
+
+    // Also track legacy event for backwards compatibility
     trackEvent('Ticket', 'Click', 'Oakland Homecoming Fight');
-    if (fightInfo?.ticketInfo.purchaseUrl) {
-      window.open(fightInfo.ticketInfo.purchaseUrl, '_blank');
-    }
+
+    // Generate tracked PayPal URL
+    const trackedUrl = generateTrackedPayPalUrl(trackingData);
+    window.open(trackedUrl, '_blank');
   };
 
   const handleFileDownload = (fileType: string, url: string) => {
@@ -135,28 +169,28 @@ const HomecomingFight: React.FC<HomecomingFightProps> = ({
             className="text-center"
           >
             <div className="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 mb-6">
-              <Star className="w-5 h-5 mr-2 text-gold-300" />
+              <Star className="w-5 h-5 mr-2 text-gold-high-contrast" />
               <span className="text-sm font-semibold">HOMECOMING FIGHT</span>
             </div>
             
             <h1 className="text-4xl lg:text-6xl font-bold mb-4">
               {fightInfo.title}
             </h1>
-            <p className="text-xl lg:text-2xl text-gold-200 mb-6">
+            <p className="text-xl lg:text-2xl text-gold-high-contrast mb-6">
               {fightInfo.subtitle}
             </p>
             
             <div className="flex flex-wrap justify-center items-center gap-6 mb-8 text-lg">
               <div className="flex items-center">
-                <Calendar className="w-6 h-6 mr-2 text-gold-300" />
+                <Calendar className="w-6 h-6 mr-2 text-gold-high-contrast" />
                 <span>August 16, 2025</span>
               </div>
               <div className="flex items-center">
-                <MapPin className="w-6 h-6 mr-2 text-gold-300" />
+                <MapPin className="w-6 h-6 mr-2 text-gold-high-contrast" />
                 <span>{fightInfo.venue}, Oakland</span>
               </div>
               <div className="flex items-center">
-                <Clock className="w-6 h-6 mr-2 text-gold-300" />
+                <Clock className="w-6 h-6 mr-2 text-gold-high-contrast" />
                 <span>{fightInfo.time}</span>
               </div>
             </div>
@@ -200,7 +234,7 @@ const HomecomingFight: React.FC<HomecomingFightProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center mb-2">
-              <Star className="w-5 h-5 mr-2 text-gold-300" />
+              <Star className="w-5 h-5 mr-2 text-gold-high-contrast" />
               <span className="text-sm font-semibold opacity-90">HOMECOMING FIGHT</span>
             </div>
             <h3 className="text-xl font-bold mb-2">{fightInfo.title}</h3>
@@ -244,38 +278,38 @@ const HomecomingFight: React.FC<HomecomingFightProps> = ({
       <div className="bg-gradient-to-r from-primary-600 to-gold-600 text-white p-8">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
-            <Star className="w-6 h-6 mr-2 text-gold-300" />
+            <Star className="w-6 h-6 mr-2 text-gold-high-contrast" />
             <span className="text-sm font-bold tracking-wider uppercase">🏠 Straight Outta Oakland</span>
           </div>
           <div className="text-right">
             <div className="text-sm opacity-90">Fight Night Countdown</div>
-            <div className="text-2xl font-black text-gold-300">{timeUntilFight}</div>
+            <div className="text-2xl font-black text-gold-high-contrast">{timeUntilFight}</div>
           </div>
         </div>
         
         <h2 className="text-4xl font-black mb-3 gradient-text">"Straight Outta Oakland"</h2>
-        <p className="text-xl text-gold-200 mb-2 font-semibold">Kumar Prescod Homecoming Fight</p>
+        <p className="text-xl text-gold-high-contrast mb-2 font-semibold">Kumar Prescod Homecoming Fight</p>
         <p className="text-sm text-white/80 mb-6">
-          <span className="font-semibold text-gold-300">G1 Promotions</span> & <span className="font-semibold text-gold-300">Lion's Den Promotions</span> present
+          <span className="font-semibold text-gold-high-contrast">G1 Promotions</span> & <span className="font-semibold text-gold-high-contrast">Lion's Den Promotions</span> present
         </p>
         
         <div className="grid md:grid-cols-3 gap-6">
           <div className="flex items-center bg-black/20 rounded-lg p-3">
-            <Calendar className="w-6 h-6 mr-3 text-gold-300" />
+            <Calendar className="w-6 h-6 mr-3 text-gold-high-contrast" />
             <div>
               <div className="text-xs opacity-90 uppercase tracking-wider">Fight Date</div>
               <div className="font-bold text-lg">August 16, 2025</div>
             </div>
           </div>
           <div className="flex items-center bg-black/20 rounded-lg p-3">
-            <MapPin className="w-6 h-6 mr-3 text-gold-300" />
+            <MapPin className="w-6 h-6 mr-3 text-gold-high-contrast" />
             <div>
               <div className="text-xs opacity-90 uppercase tracking-wider">Venue</div>
               <div className="font-bold text-lg">Oakland Marriott City Center</div>
             </div>
           </div>
           <div className="flex items-center bg-black/20 rounded-lg p-3">
-            <Clock className="w-6 h-6 mr-3 text-gold-300" />
+            <Clock className="w-6 h-6 mr-3 text-gold-high-contrast" />
             <div>
               <div className="text-xs opacity-90 uppercase tracking-wider">Doors Open</div>
               <div className="font-bold text-lg">3:00 PM PST</div>
@@ -293,27 +327,27 @@ const HomecomingFight: React.FC<HomecomingFightProps> = ({
       {/* Content */}
       <div className="p-8">
         <div className="bg-gradient-to-r from-amber-800/40 to-red-800/40 rounded-lg p-6 mb-6 border border-gold-400/50">
-          <h3 className="text-lg font-bold text-gold-200 mb-3">Fight Night — August 16th 🥊</h3>
+          <h3 className="text-lg font-bold text-gold-high-contrast mb-3">Fight Night — August 16th 🥊</h3>
           <p className="text-gold-100 mb-4">
             Come show your support as Kumar steps into the ring under G1 Promotions and Lion's Den Promotions 
             at the Oakland Marriott City Center!
           </p>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="font-semibold text-gold-200">📍 Doors Open: 3 PM</p>
-              <p className="font-semibold text-gold-200">🥊 First Fight: 4 PM Sharp</p>
+              <p className="font-semibold text-gold-high-contrast">📍 Doors Open: 3 PM</p>
+              <p className="font-semibold text-gold-high-contrast">🥊 First Fight: 4 PM Sharp</p>
             </div>
             <div>
-              <p className="font-semibold text-gold-300">💳 +$5 Online Processing Fee</p>
-              <p className="font-semibold text-red-600">🚫 No Refunds | No Exchanges</p>
+              <p className="font-semibold text-gold-high-contrast">💳 +$5 Online Processing Fee</p>
+              <p className="font-semibold text-red-300">🚫 No Refunds | No Exchanges</p>
             </div>
           </div>
-          <p className="text-sm text-gold-300 mt-4 italic">Bouts subject to change.</p>
+          <p className="text-sm text-gold-high-contrast mt-4 italic">Bouts subject to change.</p>
         </div>
 
         {/* VIP Experience Details */}
         <div className="mb-6">
-          <h4 className="text-lg font-semibold text-gold-200 mb-3 flex items-center">
+          <h4 className="text-lg font-semibold text-gold-high-contrast mb-3 flex items-center">
             <span className="text-gold-500 mr-2">👑</span>
             VIP Experience
           </h4>
@@ -327,23 +361,23 @@ const HomecomingFight: React.FC<HomecomingFightProps> = ({
 
         {/* Fight Highlights */}
         <div className="mb-6">
-          <h4 className="text-lg font-semibold text-secondary-900 mb-3">Why You Can't Miss This Fight</h4>
+          <h4 className="text-lg font-semibold text-white mb-3">Why You Can't Miss This Fight</h4>
           <div className="grid md:grid-cols-2 gap-3">
             <div className="flex items-start">
               <span className="text-gold-500 mr-2">🏠</span>
-              <span className="text-secondary-700">Kumar's first professional fight in Oakland</span>
+              <span className="text-gold-100">Kumar's first professional fight in Oakland</span>
             </div>
             <div className="flex items-start">
               <span className="text-gold-500 mr-2">🥊</span>
-              <span className="text-secondary-700">Perfect 3-0 record with 100% KO rate</span>
+              <span className="text-gold-100">Perfect 3-0 record with 100% KO rate</span>
             </div>
             <div className="flex items-start">
               <span className="text-gold-500 mr-2">🏆</span>
-              <span className="text-secondary-700">9x National Amateur Champion returns home</span>
+              <span className="text-gold-100">9x National Amateur Champion returns home</span>
             </div>
             <div className="flex items-start">
               <span className="text-gold-500 mr-2">📺</span>
-              <span className="text-secondary-700">Live broadcast on FOX Sports</span>
+              <span className="text-gold-100">Live broadcast on FOX Sports</span>
             </div>
           </div>
         </div>
@@ -351,7 +385,7 @@ const HomecomingFight: React.FC<HomecomingFightProps> = ({
         {/* Special Events */}
         {showSpecialEvents && fightInfo.specialEvents.length > 0 && (
           <div className="mb-6">
-            <h4 className="text-lg font-semibold text-secondary-900 mb-3 flex items-center">
+            <h4 className="text-lg font-semibold text-white mb-3 flex items-center">
               <Gift className="w-5 h-5 mr-2 text-primary-600" />
               Special Events
             </h4>
@@ -359,11 +393,11 @@ const HomecomingFight: React.FC<HomecomingFightProps> = ({
               {fightInfo.specialEvents.map((event, index) => (
                 <div key={index} className="bg-gray-50 rounded-lg p-4">
                   <div className="flex justify-between items-start mb-2">
-                    <h5 className="font-semibold text-secondary-900">{event.name}</h5>
-                    <span className="text-sm text-secondary-600">{event.time}</span>
+                    <h5 className="font-semibold text-gray-900">{event.name}</h5>
+                    <span className="text-sm text-gray-600">{event.time}</span>
                   </div>
-                  <p className="text-sm text-secondary-700 mb-1">{event.description}</p>
-                  <p className="text-sm text-secondary-600">{event.location}</p>
+                  <p className="text-sm text-gray-700 mb-1">{event.description}</p>
+                  <p className="text-sm text-gray-600">{event.location}</p>
                 </div>
               ))}
             </div>
@@ -373,7 +407,7 @@ const HomecomingFight: React.FC<HomecomingFightProps> = ({
         {/* Real Ticket Pricing Information */}
         {showTickets && (
           <div className="mb-6">
-            <h4 className="text-lg font-semibold text-secondary-900 mb-3 flex items-center">
+            <h4 className="text-lg font-semibold text-white mb-3 flex items-center">
               <Ticket className="w-5 h-5 mr-2 text-primary-600" />
               Official Ticket Pricing
             </h4>
@@ -418,17 +452,14 @@ const HomecomingFight: React.FC<HomecomingFightProps> = ({
 
         {/* Championship Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-6">
-          <a
-            href="/fights/tickets/KumarPrescod8:16 Tickets.html"
+          <button
             className="btn-champion flex items-center justify-center"
             onClick={handleTicketClick}
-            target="_blank"
-            rel="noopener noreferrer"
           >
             <Ticket className="w-6 h-6 mr-3" />
             Get Fight Tickets
             <ArrowRight className="w-5 h-5 ml-3" />
-          </a>
+          </button>
           
           <div className="flex flex-col sm:flex-row gap-4">
             {fightInfo.files.fightCard && (

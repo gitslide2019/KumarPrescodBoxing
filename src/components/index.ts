@@ -55,6 +55,15 @@ export { default as ErrorBoundary } from './common/ErrorBoundary/ErrorBoundary';
 export { default as ErrorFallback } from './common/ErrorBoundary/ErrorFallback';
 export { withErrorBoundary } from './common/ErrorBoundary/withErrorBoundary';
 
+// Magic MCP Generated Boxing Components
+export { default as FightPosterCard } from './ui/FightPosterCard';
+export { default as TrainingStatsWidget } from './ui/TrainingStatsWidget';
+export { default as Button } from './ui/Button';
+export { default as Card } from './ui/Card';
+
+// Enhanced Sections
+export { default as EnhancedHeroSection } from './sections/EnhancedHeroSection';
+
 // Type Exports
 export type { FighterCardProps } from '../types/boxing';
 export type { FightCardProps } from '../types/boxing';

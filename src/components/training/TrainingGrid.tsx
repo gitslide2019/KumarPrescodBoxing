@@ -5,8 +5,8 @@
 
 import React, { useState, useMemo } from 'react';
 import { TrainingSession, TrainingType, TrainingIntensity } from '../../types/boxing';
-import { OptimizedImage } from '../common/OptimizedImage';
-import { LoadingSpinner } from '../common/LoadingSpinner';
+import OptimizedImage from '../common/OptimizedImage';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 interface TrainingGridProps {
   sessions: TrainingSession[];
@@ -115,68 +115,104 @@ const TrainingGrid: React.FC<TrainingGridProps> = ({
     setImageErrors(prev => ({ ...prev, [key]: true }));
   };
 
-  const SessionCard = ({ session }: { session: TrainingSession }) => (
-    <div
-      className={`
-        bg-gradient-to-br from-gray-900 to-black border-2 border-gray-700 rounded-lg
-        hover:border-red-600 transition-all duration-300 transform hover:scale-[1.02]
-        ${onSessionClick ? 'cursor-pointer' : ''}
-        relative overflow-hidden group
-      `}
-      onClick={() => handleSessionClick(session)}
-      role={onSessionClick ? 'button' : undefined}
-      tabIndex={onSessionClick ? 0 : undefined}
-      aria-label={onSessionClick ? `View details for ${session.type} training session` : undefined}
-    >
-      {/* Loading Overlay */}
-      {loadingSessions[session.id] && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
-          <LoadingSpinner size="sm" />
-        </div>
-      )}
+  // Map of training types to Kumar's actual training images
+  const getTrainingImage = (session: TrainingSession & { id?: string }, index: number) => {
+    const trainingImages = [
+      '/images/training/daily-routine/DSC00612.jpeg',
+      '/images/training/daily-routine/DSC00624.jpeg',
+      '/images/training/daily-routine/DSC00628.jpeg',
+      '/images/training/daily-routine/DSC00631.jpeg',
+      '/images/training/daily-routine/DSC00641.jpeg',
+      '/images/training/daily-routine/DSC00650.jpeg',
+      '/images/training/daily-routine/DSC00661.jpeg',
+      '/images/training/daily-routine/DSC00664.jpeg',
+      '/images/training/daily-routine/DSC00668.jpeg',
+      '/images/training/daily-routine/DSC00678.jpeg',
+      '/images/training/daily-routine/DSC00690.jpeg',
+      '/images/training/daily-routine/DSC00702.jpeg',
+      '/images/training/daily-routine/DSC00705.jpeg',
+      '/images/training/daily-routine/DSC00708.jpeg',
+      '/images/training/daily-routine/DSC00721.jpeg',
+      '/images/training/daily-routine/DSC00730.jpeg',
+      '/images/training/daily-routine/DSC00742.jpeg',
+      '/images/training/daily-routine/DSC00744.jpeg',
+      '/images/training/daily-routine/DSC00747.jpeg',
+      '/images/training/daily-routine/DSC00759.jpeg',
+      '/images/training/daily-routine/DSC00767.jpeg',
+      '/images/training/daily-routine/DSC00778.jpeg',
+      '/images/training/daily-routine/DSC00781.jpeg',
+      '/images/training/daily-routine/DSC00791.jpeg',
+      '/images/training/daily-routine/DSC00798.jpeg',
+      '/images/training/daily-routine/DSC00805.jpeg',
+      '/images/training/daily-routine/DSC00809.jpeg',
+      '/images/training/daily-routine/DSC00810.jpeg',
+      '/images/training/daily-routine/DSC00816.jpeg',
+      '/images/training/daily-routine/DSC00834.jpeg',
+      '/images/training/daily-routine/DSC00837.jpeg',
+      '/images/training/daily-routine/DSC00846.jpeg',
+      '/images/training/daily-routine/DSC00865.jpeg',
+      '/images/training/daily-routine/DSC00869.jpeg',
+      '/images/training/daily-routine/DSC00890.jpeg',
+      '/images/training/daily-routine/DSC00893.jpeg',
+      '/images/training/daily-routine/DSC00909.jpeg',
+      '/images/training/daily-routine/DSC00943.jpeg',
+      '/images/training/daily-routine/DSC00948.jpeg',
+      '/images/training/daily-routine/DSC00950.jpeg'
+    ];
+    
+    // Use the session ID or index to select a consistent image for each session
+    const sessionId = session.id || '';
+    const imageIndex = (sessionId.split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0) + index) % trainingImages.length;
+    return trainingImages[imageIndex];
+  };
 
-      {/* Media Section */}
-      {session.media && session.media.length > 0 && (
+  const SessionCard = ({ session }: { session: TrainingSession & { id?: string } }) => {
+    // Get a consistent image for this session based on its ID
+    const sessionImage = getTrainingImage(session, session.id?.length || 0);
+    
+    return (
+      <div
+        className={`
+          bg-gradient-to-br from-gray-900 to-black border-2 border-gray-700 rounded-lg
+          hover:border-red-600 transition-all duration-300 transform hover:scale-[1.02]
+          ${onSessionClick ? 'cursor-pointer' : ''}
+          relative overflow-hidden group
+        `}
+        onClick={() => handleSessionClick(session)}
+        role={onSessionClick ? 'button' : undefined}
+        tabIndex={onSessionClick ? 0 : undefined}
+        aria-label={onSessionClick ? `View details for ${session.type} training session` : undefined}
+      >
+        {/* Loading Overlay */}
+        {loadingSessions[session.id] && (
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
+            <LoadingSpinner size="sm" />
+          </div>
+        )}
+
+        {/* Media Section */}
         <div className="relative h-48 overflow-hidden">
-          {session.media[0].type === 'image' && !imageErrors[`${session.id}-0`] ? (
+          {!imageErrors[`${session.id}-0`] ? (
             <OptimizedImage
-              src={session.media[0].url}
-              alt={session.media[0].caption || `${session.type} training session`}
+              src={sessionImage}
+              alt={`${session.type} training session`}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
               onError={() => handleImageError(session.id, 0)}
               loading="lazy"
             />
-          ) : session.media[0].type === 'video' ? (
-            <div className="w-full h-full bg-gradient-to-br from-red-900 to-black flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-4xl mb-2">🎥</div>
-                <p className="text-white text-sm">Video Training</p>
-              </div>
-            </div>
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-4xl mb-2">{getTypeIcon(session.type)}</div>
-                <p className="text-white text-sm">{session.type}</p>
-              </div>
-            </div>
+            <OptimizedImage
+              src={sessionImage}
+              alt={`${session.type} training session`}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              loading="lazy"
+            />
           )}
           
-          {/* Media Count Badge */}
-          {session.media.length > 1 && (
-            <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
-              +{session.media.length - 1} more
-            </div>
-          )}
-
-          {/* Video Play Button Overlay */}
-          {session.media[0].type === 'video' && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center text-white text-2xl hover:bg-red-700 transition-colors">
-                ▶
-              </div>
-            </div>
-          )}
+          {/* Training Type Badge */}
+          <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
+            {session.type}
+          </div>
 
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -250,7 +286,7 @@ const TrainingGrid: React.FC<TrainingGridProps> = ({
         )}
 
         {/* Media Caption */}
-        {session.media && session.media.length > 0 && session.media[0].caption && (
+        {session.media && session.media.length > 0 && session.media[0] && session.media[0].caption && (
           <div className="mt-3 text-xs text-gray-400 italic">
             "{session.media[0].caption}"
           </div>

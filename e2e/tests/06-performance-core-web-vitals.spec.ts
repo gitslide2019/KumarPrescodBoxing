@@ -38,25 +38,105 @@ test.describe('Performance & Core Web Vitals - Boxing Fan Experience', () => {
     // Wait for initial content to load
     await page.waitForLoadState('networkidle', { timeout: 30000 });
     
+    // Check for WebVitalsReporter presence (new feature)
+    const hasWebVitalsReporter = await page.evaluate(() => {
+      return !!document.querySelector('[data-testid="web-vitals-reporter"]') || 
+             !!window.webVitals ||
+             !!document.querySelector('.web-vitals-debug');
+    });
+    
+    if (hasWebVitalsReporter) {
+      console.log('✅ WebVitalsReporter component detected');
+    }
+    
     // Monitor Core Web Vitals for 10 seconds
     const vitals = await performanceUtils.monitorCoreWebVitals(page, 10000);
     
+    // Test enhanced Core Web Vitals monitoring including INP and TTFB
+    const enhancedVitals = await page.evaluate(() => {
+      return new Promise((resolve) => {
+        const vitalsData: any = {};
+        
+        // Check for new performance API features
+        if ('PerformanceObserver' in window) {
+          const observer = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              if (entry.entryType === 'largest-contentful-paint') {
+                vitalsData.LCP = entry.startTime;
+              } else if (entry.entryType === 'first-input') {
+                vitalsData.FID = entry.processingStart - entry.startTime;
+              } else if (entry.entryType === 'layout-shift' && !entry.hadRecentInput) {
+                vitalsData.CLS = (vitalsData.CLS || 0) + entry.value;
+              }
+            }
+          });
+          
+          try {
+            observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift', 'navigation'] });
+          } catch (e) {
+            console.warn('Performance observer not fully supported');
+          }
+        }
+        
+        // Check for INP (Interaction to Next Paint) support
+        if ('PerformanceObserver' in window) {
+          try {
+            const inpObserver = new PerformanceObserver((list) => {
+              for (const entry of list.getEntries()) {
+                if (entry.name === 'inp') {
+                  vitalsData.INP = entry.value;
+                }
+              }
+            });
+            inpObserver.observe({ entryTypes: ['event'] });
+          } catch (e) {
+            // INP not supported in this browser
+          }
+        }
+        
+        // Get TTFB from navigation timing
+        const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+        if (navigation) {
+          vitalsData.TTFB = navigation.responseStart - navigation.requestStart;
+          vitalsData.FCP = navigation.domContentLoadedEventStart - navigation.navigationStart;
+        }
+        
+        setTimeout(() => resolve(vitalsData), 3000);
+      });
+    });
+    
+    console.log('📊 Enhanced Web Vitals:', enhancedVitals);
+    
     // Verify Largest Contentful Paint (LCP) - Critical for boxing hero content
-    if (vitals.LCP) {
-      expect(vitals.LCP).toBeLessThan(2500); // Good LCP threshold
-      console.log(`🥊 LCP: ${Math.round(vitals.LCP)}ms (threshold: <2500ms)`);
+    if (vitals.LCP || enhancedVitals.LCP) {
+      const lcpValue = vitals.LCP || enhancedVitals.LCP;
+      expect(lcpValue).toBeLessThan(2500); // Good LCP threshold
+      console.log(`🥊 LCP: ${Math.round(lcpValue)}ms (threshold: <2500ms)`);
     }
     
     // Verify First Input Delay (FID) - Important for boxing fan interactions
-    if (vitals.FID) {
-      expect(vitals.FID).toBeLessThan(100); // Good FID threshold
-      console.log(`⚡ FID: ${Math.round(vitals.FID)}ms (threshold: <100ms)`);
+    if (vitals.FID || enhancedVitals.FID) {
+      const fidValue = vitals.FID || enhancedVitals.FID;
+      expect(fidValue).toBeLessThan(100); // Good FID threshold
+      console.log(`⚡ FID: ${Math.round(fidValue)}ms (threshold: <100ms)`);
     }
     
     // Verify Cumulative Layout Shift (CLS) - Critical for boxing stats display
-    if (vitals.CLS) {
-      expect(vitals.CLS).toBeLessThan(0.1); // Good CLS threshold
-      console.log(`📐 CLS: ${vitals.CLS.toFixed(3)} (threshold: <0.1)`);
+    if (vitals.CLS || enhancedVitals.CLS) {
+      const clsValue = vitals.CLS || enhancedVitals.CLS;
+      expect(clsValue).toBeLessThan(0.1); // Good CLS threshold
+      console.log(`📐 CLS: ${clsValue.toFixed(3)} (threshold: <0.1)`);
+    }
+    
+    // Test new performance metrics
+    if (enhancedVitals.TTFB) {
+      expect(enhancedVitals.TTFB).toBeLessThan(600); // Good TTFB threshold
+      console.log(`🚀 TTFB: ${Math.round(enhancedVitals.TTFB)}ms (threshold: <600ms)`);
+    }
+    
+    if (enhancedVitals.FCP) {
+      expect(enhancedVitals.FCP).toBeLessThan(1800); // Good FCP threshold
+      console.log(`🎨 FCP: ${Math.round(enhancedVitals.FCP)}ms (threshold: <1800ms)`);
     }
     
     // Overall page load time should be reasonable for boxing fans
@@ -65,11 +145,48 @@ test.describe('Performance & Core Web Vitals - Boxing Fan Experience', () => {
     console.log(`⏱️ Total load time: ${totalLoadTime}ms`);
   });
 
-  test('should optimize boxing media loading performance', async ({ page }) => {
+  test('should optimize boxing media loading performance with modern formats', async ({ page }) => {
     await page.goto('/');
     
+    // Test enhanced OptimizedImage component
+    const optimizedImages = page.locator('img[data-optimized="true"], .optimized-image img');
+    const totalImages = page.locator('img');
+    
+    console.log(`🖼️ Images found: ${await totalImages.count()}, Optimized: ${await optimizedImages.count()}`);
+    
+    // Check for modern image format support (WebP/AVIF)
+    const modernFormats = await page.evaluate(() => {
+      const images = Array.from(document.querySelectorAll('img'));
+      const formatCounts = {
+        webp: 0,
+        avif: 0,
+        jpg: 0,
+        png: 0,
+        total: images.length
+      };
+      
+      images.forEach(img => {
+        const src = img.src || img.getAttribute('src') || '';
+        if (src.includes('.webp')) formatCounts.webp++;
+        else if (src.includes('.avif')) formatCounts.avif++;
+        else if (src.includes('.jpg') || src.includes('.jpeg')) formatCounts.jpg++;
+        else if (src.includes('.png')) formatCounts.png++;
+      });
+      
+      return formatCounts;
+    });
+    
+    console.log(`📊 Image formats:`, modernFormats);
+    
+    // Should use modern formats when possible
+    const modernFormatRatio = (modernFormats.webp + modernFormats.avif) / Math.max(modernFormats.total, 1);
+    if (modernFormats.total > 0) {
+      expect(modernFormatRatio).toBeGreaterThan(0.3); // At least 30% modern formats
+      console.log(`✅ Modern format usage: ${(modernFormatRatio * 100).toFixed(1)}%`);
+    }
+    
     // Test training image loading performance
-    const trainingImages = page.locator('img[src*="training"], img[src*="DSC"]');
+    const trainingImages = page.locator('img[src*="training"], img[src*="DSC"], img[alt*="Kumar"], img[alt*="boxing"]');
     
     if (await trainingImages.count() > 0) {
       const imageLoadStart = Date.now();
@@ -387,12 +504,76 @@ test.describe('Performance & Core Web Vitals - Boxing Fan Experience', () => {
     await expect(page.locator('h1, h2').first()).toBeVisible();
   });
 
-  test('should handle offline scenarios gracefully', async ({ page }) => {
+  test('should handle offline scenarios gracefully with enhanced service worker', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     
     // Ensure page is loaded first
     await expect(page.locator('h1, h2').first()).toBeVisible();
+    
+    // Check for enhanced service worker registration
+    const serviceWorkerCheck = await page.evaluate(() => {
+      return new Promise((resolve) => {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistration().then(registration => {
+            resolve({
+              hasServiceWorker: true,
+              isRegistered: !!registration,
+              scope: registration?.scope || null,
+              scriptURL: registration?.active?.scriptURL || null,
+              state: registration?.active?.state || null
+            });
+          }).catch(() => {
+            resolve({
+              hasServiceWorker: true,
+              isRegistered: false,
+              scope: null,
+              scriptURL: null,
+              state: null
+            });
+          });
+        } else {
+          resolve({
+            hasServiceWorker: false,
+            isRegistered: false,
+            scope: null,
+            scriptURL: null,
+            state: null
+          });
+        }
+      });
+    });
+    
+    console.log(`🔧 Service Worker status:`, serviceWorkerCheck);
+    
+    // Check for boxing-specific cache names
+    const cacheCheck = await page.evaluate(() => {
+      if ('caches' in window) {
+        return caches.keys().then(cacheNames => {
+          const boxingCaches = cacheNames.filter(name => 
+            name.includes('kumar-prescod-boxing') || 
+            name.includes('boxing') ||
+            name.includes('static') ||
+            name.includes('dynamic') ||
+            name.includes('images')
+          );
+          return {
+            hasCacheStorage: true,
+            totalCaches: cacheNames.length,
+            boxingCaches: boxingCaches.length,
+            cacheNames: boxingCaches
+          };
+        });
+      }
+      return {
+        hasCacheStorage: false,
+        totalCaches: 0,
+        boxingCaches: 0,
+        cacheNames: []
+      };
+    });
+    
+    console.log(`💾 Cache status:`, cacheCheck);
     
     // Simulate offline condition
     await page.context().setOffline(true);
@@ -402,7 +583,8 @@ test.describe('Performance & Core Web Vitals - Boxing Fan Experience', () => {
       return {
         hasServiceWorker: 'serviceWorker' in navigator,
         cacheStorage: 'caches' in window,
-        isOnline: navigator.onLine
+        isOnline: navigator.onLine,
+        hasBoxingServiceWorker: !!(window as any).boxingServiceWorker
       };
     });
     
@@ -411,7 +593,28 @@ test.describe('Performance & Core Web Vitals - Boxing Fan Experience', () => {
     // Essential elements should still be visible
     await expect(page.locator('text=/Kumar Prescod|boxer/i')).toBeVisible();
     
+    // Test navigation during offline
+    const navLinks = page.locator('nav a, header a');
+    if (await navLinks.count() > 0) {
+      await navLinks.first().click();
+      await page.waitForTimeout(2000);
+      
+      // Should still show some content (from cache or offline fallback)
+      const hasContent = await page.locator('h1, h2, p').count();
+      expect(hasContent).toBeGreaterThan(0);
+      console.log(`🧭 Offline navigation working: ${hasContent} content elements found`);
+    }
+    
     // Re-enable network
     await page.context().setOffline(false);
+    
+    // Check for background sync capability
+    const backgroundSyncCheck = await page.evaluate(() => {
+      return 'serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype;
+    });
+    
+    if (backgroundSyncCheck) {
+      console.log('✅ Background sync supported');
+    }
   });
 });

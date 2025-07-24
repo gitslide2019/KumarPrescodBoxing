@@ -46,11 +46,60 @@ test.describe('Accessibility & Screen Reader Compatibility - Boxing A11y', () =>
     console.log(`✅ Heading hierarchy: ${headingLevels.join(' → ')}`);
   });
 
-  test('should provide descriptive alt text for boxing images', async ({ page }) => {
+  test('should have enhanced skip navigation links for boxing content', async ({ page }) => {
+    // Test for skip to main content link
+    const skipLink = page.locator('a[href="#main-content"], .sr-only:has-text("Skip to main content")');
+    
+    if (await skipLink.count() > 0) {
+      // Skip link should be initially hidden
+      await expect(skipLink.first()).not.toBeVisible();
+      
+      // Skip link should become visible on focus
+      await skipLink.first().focus();
+      await expect(skipLink.first()).toBeVisible();
+      
+      // Skip link should navigate to main content
+      await skipLink.first().press('Enter');
+      
+      // Main content should be focused
+      const mainContent = page.locator('#main-content, main[role="main"]');
+      await expect(mainContent).toBeVisible();
+      
+      console.log('✅ Skip navigation link working properly');
+    } else {
+      console.warn('⚠️ Skip navigation link not found');
+    }
+  });
+
+  test('should provide enhanced descriptive alt text for boxing images', async ({ page }) => {
     const images = page.locator('img');
     const imageCount = await images.count();
     
     expect(imageCount).toBeGreaterThan(0);
+    
+    // Check for enhanced alt text and aria labels
+    for (let i = 0; i < Math.min(imageCount, 10); i++) {
+      const image = images.nth(i);
+      const alt = await image.getAttribute('alt');
+      const ariaLabel = await image.getAttribute('aria-label');
+      const title = await image.getAttribute('title');
+      
+      // Image should have either alt, aria-label, or title
+      const hasDescription = alt || ariaLabel || title;
+      expect(hasDescription).toBeTruthy();
+      
+      if (alt) {
+        // Alt text should be descriptive for boxing content
+        expect(alt.length).toBeGreaterThan(3);
+        console.log(`🖼️ Image ${i + 1} alt: "${alt}"`);
+      }
+    }
+    
+    // Check for OptimizedImage component accessibility
+    const optimizedImages = page.locator('img[data-optimized="true"], .optimized-image img');
+    if (await optimizedImages.count() > 0) {
+      console.log(`✅ ${await optimizedImages.count()} optimized images with proper accessibility`);
+    }
     
     // Check alt text for all images
     for (let i = 0; i < Math.min(10, imageCount); i++) {

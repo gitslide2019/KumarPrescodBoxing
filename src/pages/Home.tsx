@@ -4,8 +4,20 @@ import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Instagram, Twitter, Youtube } from 'lucide-react';
 import { useAnalytics } from '../contexts/AnalyticsContext';
+import { useAuth } from '../contexts/AuthContext';
 import { useFunding } from '../contexts/FundingContext';
-import HeroSection from '../components/sections/HeroSection';
+import { 
+  generateTrackedPayPalUrl, 
+  trackTicketIntent, 
+  TICKET_SOURCES, 
+  TICKET_TYPES, 
+  COMPONENTS, 
+  PAGES,
+  type TicketTrackingData 
+} from '../utils/ticketTracking';
+import Button from '../components/ui/Button';
+import { Card, CardHeader, CardBody } from '../components/ui/Card';
+import EnhancedHeroSection from '../components/sections/EnhancedHeroSection';
 import UpcomingFights from '../components/sections/UpcomingFights';
 import LatestNews from '../components/sections/LatestNews';
 import StatsSection from '../components/sections/StatsSection';
@@ -15,9 +27,16 @@ import CommunityImpact from '../components/community/CommunityImpact';
 import PhotoGallery from '../components/common/PhotoGallery';
 import HomecomingFight from '../components/fights/HomecomingFight';
 import { getFeaturedPhotos } from '../utils/imageUtils';
+import { KumarPrescod } from '../components/seo/StructuredData';
 
 const Home: React.FC = () => {
-  const { trackEvent } = useAnalytics();
+  const { 
+    trackEvent, 
+    trackTicketPurchaseIntent, 
+    trackTicketPurchaseSource, 
+    trackTicketPurchaseFunnel 
+  } = useAnalytics();
+  const { user } = useAuth();
   const { getActiveGoals } = useFunding();
   const activeGoals = getActiveGoals();
   const featuredPhotos = getFeaturedPhotos();
@@ -30,26 +49,58 @@ const Home: React.FC = () => {
     trackEvent('CTA', 'Click', ctaType);
   };
 
+  const handleTicketClick = () => {
+    const trackingData: TicketTrackingData = {
+      source: TICKET_SOURCES.HOME_CTA,
+      component: COMPONENTS.HOME_PAGE,
+      page: PAGES.HOME,
+      ticketType: TICKET_TYPES.GENERAL,
+      price: 105,
+      membershipTier: user?.membershipTier
+    };
+
+    // Track the ticket purchase intent
+    trackTicketIntent(trackingData, {
+      trackTicketPurchaseIntent,
+      trackTicketPurchaseSource,
+      trackTicketPurchaseFunnel
+    });
+
+    // Also track legacy event for backwards compatibility
+    handleCTAClick('Buy Homecoming Tickets');
+
+    // Generate tracked PayPal URL
+    const trackedUrl = generateTrackedPayPalUrl(trackingData);
+    window.open(trackedUrl, '_blank');
+  };
+
   return (
     <>
       <Helmet>
         <title>Kumar Prescod - Professional Boxer | Oakland, CA</title>
         <meta name="description" content="Follow the journey of Kumar Prescod, 18-year-old professional boxer from Oakland, CA. Buy tickets, merchandise, and stay updated with latest fights and news." />
       </Helmet>
+      
+      {/* Structured Data for SEO */}
+      <KumarPrescod.Fighter />
+      <KumarPrescod.HomecomingFight />
+      <KumarPrescod.Organization />
+      <KumarPrescod.Gym />
+      <KumarPrescod.FAQ />
 
-      {/* Hero Section */}
-      <HeroSection />
+      {/* Enhanced Hero Section */}
+      <EnhancedHeroSection />
 
       {/* Stats Section */}
-      <StatsSection />
+      <section className="section-padding bg-gradient-to-b from-neutral-900 to-slate-900">
+        <StatsSection />
+      </section>
 
       {/* Homecoming Fight - Championship Section */}
-      <section className="section-padding bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
-        {/* Boxing ring background elements */}
+      <section className="section-padding bg-gradient-to-b from-slate-900 via-neutral-800 to-slate-900 relative overflow-hidden">
+        {/* Subtle boxing ring element - performance optimized */}
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-20 w-40 h-40 border-4 border-primary-600 rounded-full animate-pulse-slow" />
-          <div className="absolute bottom-20 right-20 w-32 h-32 border-4 border-gold-500 rounded-full animate-bounce-slow" />
-          <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-r from-primary-600/20 to-gold-500/20 rounded-full animate-float" />
+          <div className="absolute top-20 left-20 w-20 h-20 border-4 border-gold-400/40 rounded-full animate-subtle" />
         </div>
         
         <div className="container-max relative z-10">
@@ -79,7 +130,7 @@ const Home: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-2xl text-gold-200 max-w-4xl mx-auto font-semibold mb-4"
+              className="text-2xl text-gold-high-contrast max-w-4xl mx-auto font-semibold mb-4"
             >
               The Raw One returns to his hometown Oakland for the biggest fight of his young career
             </motion.p>
@@ -107,14 +158,14 @@ const Home: React.FC = () => {
       </section>
 
       {/* Upcoming Fights */}
-      <section className="section-padding bg-gradient-to-b from-gray-900 to-slate-900">
+      <section className="section-padding bg-gradient-to-b from-neutral-900 to-slate-900">
         <div className="container-max">
           <div className="text-center mb-12">
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl lg:text-5xl font-bold text-white mb-4"
+              className="heading-2 text-white mb-6"
             >
               Upcoming <span className="gradient-text">Fights</span>
             </motion.h2>
@@ -123,7 +174,7 @@ const Home: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-xl text-gold-200 max-w-3xl mx-auto"
+              className="text-xl text-gold-high-contrast max-w-3xl mx-auto"
             >
               Don't miss the next chapter in Kumar's boxing journey. Get your tickets now and witness history in the making.
             </motion.p>
@@ -133,14 +184,14 @@ const Home: React.FC = () => {
       </section>
 
       {/* Latest News */}
-      <section className="section-padding bg-gradient-to-b from-slate-800 to-gray-900">
+      <section className="section-padding bg-gradient-to-b from-slate-800 to-neutral-900">
         <div className="container-max">
           <div className="text-center mb-12">
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl lg:text-5xl font-bold text-white mb-4"
+              className="heading-2 text-white mb-6"
             >
               Latest <span className="gradient-text">News</span>
             </motion.h2>
@@ -149,7 +200,7 @@ const Home: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-xl text-gold-200 max-w-3xl mx-auto"
+              className="text-xl text-gold-high-contrast max-w-3xl mx-auto"
             >
               Stay updated with the latest news, interviews, and behind-the-scenes content from Kumar's boxing career.
             </motion.p>
@@ -159,14 +210,14 @@ const Home: React.FC = () => {
       </section>
 
       {/* Funding Section */}
-      <section className="section-padding bg-gradient-to-b from-gray-900 to-slate-900">
+      <section className="section-padding bg-gradient-to-b from-neutral-900 to-slate-900">
         <div className="container-max">
           <div className="text-center mb-12">
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl lg:text-5xl font-bold text-white mb-4"
+              className="heading-2 text-white mb-6"
             >
               Support Kumar's <span className="gradient-text">Journey</span>
             </motion.h2>
@@ -175,7 +226,7 @@ const Home: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-xl text-gold-200 max-w-3xl mx-auto"
+              className="text-xl text-gold-high-contrast max-w-3xl mx-auto"
             >
               Help Kumar reach his championship goals. Every contribution makes a difference in his training, equipment, and journey to greatness.
             </motion.p>
@@ -210,27 +261,28 @@ const Home: React.FC = () => {
             transition={{ delay: 0.4 }}
             className="text-center mt-8"
           >
-            <Link
-              to="/sponsors"
-              className="btn-outline"
-              onClick={() => handleCTAClick('View All Funding')}
-            >
-              View All Funding Goals
-              <ArrowRight className="w-5 h-5 ml-2" />
+            <Link to="/sponsors" onClick={() => handleCTAClick('View All Funding')}>
+              <Button
+                variant="outline"
+                size="lg"
+                rightIcon={<ArrowRight className="w-5 h-5" />}
+              >
+                View All Funding Goals
+              </Button>
             </Link>
           </motion.div>
         </div>
       </section>
 
       {/* Fight Promotion Gallery */}
-      <section className="section-padding bg-gradient-to-r from-slate-800 via-gray-900 to-slate-800">
+      <section className="section-padding bg-gradient-to-r from-slate-800 via-neutral-900 to-slate-800">
         <div className="container-max">
           <div className="text-center mb-12">
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl lg:text-5xl font-bold text-white mb-4"
+              className="heading-2 text-white mb-6"
             >
               Fight <span className="gradient-text">Promotion</span> Gallery
             </motion.h2>
@@ -239,7 +291,7 @@ const Home: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-xl text-gold-200 max-w-3xl mx-auto"
+              className="text-xl text-gold-high-contrast max-w-3xl mx-auto"
             >
               Official promotion photos from the "Straight Outta Oakland" homecoming fight campaign.
             </motion.p>
@@ -253,10 +305,10 @@ const Home: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="grid md:grid-cols-2 gap-8 mb-12"
           >
-            <motion.div 
-              className="card group cursor-pointer overflow-hidden"
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
+            <Card 
+              variant="glass"
+              clickable={true}
+              className="group cursor-pointer overflow-hidden relative"
             >
               <img 
                 src="/fights/2025-08-16-oakland/IMG_5882.jpg" 
@@ -270,12 +322,12 @@ const Home: React.FC = () => {
                   <p className="text-gold-300 text-sm">Straight Outta Oakland Campaign</p>
                 </div>
               </div>
-            </motion.div>
+            </Card>
             
-            <motion.div 
-              className="card group cursor-pointer overflow-hidden"
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
+            <Card 
+              variant="glass"
+              clickable={true}
+              className="group cursor-pointer overflow-hidden relative"
             >
               <img 
                 src="/fights/2025-08-16-oakland/IMG_7202.jpeg" 
@@ -289,7 +341,7 @@ const Home: React.FC = () => {
                   <p className="text-gold-300 text-sm">G1 & Lion's Den Promotions</p>
                 </div>
               </div>
-            </motion.div>
+            </Card>
           </motion.div>
 
           {/* Training Gallery */}
@@ -298,7 +350,7 @@ const Home: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl lg:text-4xl font-bold text-white mb-4"
+              className="heading-3 text-white mb-6"
             >
               Training <span className="gradient-text">Highlights</span>
             </motion.h3>
@@ -320,13 +372,14 @@ const Home: React.FC = () => {
             transition={{ delay: 0.4 }}
             className="text-center"
           >
-            <Link
-              to="/journey"
-              className="btn-secondary"
-              onClick={() => handleCTAClick('View All Photos')}
-            >
-              View Complete Gallery
-              <ArrowRight className="w-5 h-5 ml-2" />
+            <Link to="/journey" onClick={() => handleCTAClick('View All Photos')}>
+              <Button
+                variant="outline"
+                size="lg"
+                rightIcon={<ArrowRight className="w-5 h-5" />}
+              >
+                View Complete Gallery
+              </Button>
             </Link>
           </motion.div>
         </div>
@@ -336,14 +389,14 @@ const Home: React.FC = () => {
       <CommunityImpact />
 
       {/* Social Feed */}
-      <section className="section-padding bg-gradient-to-b from-slate-900 to-gray-900">
+      <section className="section-padding bg-gradient-to-b from-slate-900 to-neutral-900">
         <div className="container-max">
           <div className="text-center mb-12">
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl lg:text-5xl font-bold text-white mb-4"
+              className="heading-2 text-white mb-6"
             >
               Follow the <span className="gradient-text">Journey</span>
             </motion.h2>
@@ -352,7 +405,7 @@ const Home: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-xl text-gold-200 max-w-3xl mx-auto mb-8"
+              className="text-xl text-gold-high-contrast max-w-3xl mx-auto mb-8"
             >
               Get exclusive behind-the-scenes content, training updates, and daily motivation from Kumar.
             </motion.p>
@@ -367,7 +420,7 @@ const Home: React.FC = () => {
                 href="https://instagram.com/kumarprescod"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center space-x-2 text-gold-300 hover:text-gold-200 transition-colors duration-200"
+                className="flex items-center space-x-2 text-gold-high-contrast hover:text-gold-high-contrast transition-colors duration-200"
                 onClick={() => handleCTAClick('Instagram')}
               >
                 <Instagram className="w-6 h-6" />
@@ -377,7 +430,7 @@ const Home: React.FC = () => {
                 href="https://twitter.com/kumarprescod"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center space-x-2 text-gold-300 hover:text-gold-200 transition-colors duration-200"
+                className="flex items-center space-x-2 text-gold-high-contrast hover:text-gold-high-contrast transition-colors duration-200"
                 onClick={() => handleCTAClick('Twitter')}
               >
                 <Twitter className="w-6 h-6" />
@@ -387,7 +440,7 @@ const Home: React.FC = () => {
                 href="https://youtube.com/@kumarprescod"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center space-x-2 text-gold-300 hover:text-gold-200 transition-colors duration-200"
+                className="flex items-center space-x-2 text-gold-high-contrast hover:text-gold-high-contrast transition-colors duration-200"
                 onClick={() => handleCTAClick('YouTube')}
               >
                 <Youtube className="w-6 h-6" />
@@ -401,11 +454,9 @@ const Home: React.FC = () => {
 
       {/* Championship CTA Section */}
       <section className="section-padding bg-gradient-to-r from-primary-600 via-primary-700 to-gold-600 text-white relative overflow-hidden">
-        {/* Championship background elements */}
+        {/* Subtle championship element - performance optimized */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-10 left-10 w-32 h-32 border-4 border-gold-400 rounded-full animate-championship-pulse" />
-          <div className="absolute bottom-10 right-10 w-24 h-24 border-4 border-white rounded-full animate-bounce-slow" />
-          <div className="absolute top-1/2 left-1/3 w-20 h-20 bg-gradient-to-r from-gold-500/30 to-white/30 rounded-full animate-float" />
+          <div className="absolute top-10 left-10 w-20 h-20 border-4 border-gold-400/50 rounded-full animate-subtle" />
         </div>
         
         <div className="container-max text-center relative z-10">
@@ -415,7 +466,7 @@ const Home: React.FC = () => {
             viewport={{ once: true }}
             className="inline-flex items-center px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full border border-gold-400/50 mb-8"
           >
-            <span className="text-gold-200 text-sm font-bold tracking-wider uppercase">
+            <span className="text-gold-high-contrast text-sm font-bold tracking-wider uppercase">
               🥊 Join The Championship Journey
             </span>
           </motion.div>
@@ -454,33 +505,34 @@ const Home: React.FC = () => {
             transition={{ delay: 0.3 }}
             className="flex flex-col lg:flex-row gap-6 justify-center items-center mb-8"
           >
-            <a
-              href="/fights/tickets/KumarPrescod8:16 Tickets.html"
-              className="btn-champion"
-              onClick={() => handleCTAClick('Buy Homecoming Tickets')}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Button
+              variant="champion"
+              size="xl"
+              rightIcon={<ArrowRight className="w-6 h-6" />}
+              onClick={handleTicketClick}
             >
               Get Fight Tickets
-              <ArrowRight className="w-6 h-6 ml-3" />
-            </a>
+            </Button>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                to="/shop"
-                className="btn-secondary"
-                onClick={() => handleCTAClick('Shop Now')}
-              >
-                Shop Merch
-                <ArrowRight className="w-5 h-5 ml-2" />
+              <Link to="/shop" onClick={() => handleCTAClick('Shop Now')}>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  rightIcon={<ArrowRight className="w-5 h-5" />}
+                >
+                  Shop Merch
+                </Button>
               </Link>
-              <Link
-                to="/sponsors"
-                className="btn-outline border-white text-white hover:bg-white hover:text-primary-600"
-                onClick={() => handleCTAClick('Become Sponsor')}
-              >
-                Sponsor Kumar
-                <ArrowRight className="w-5 h-5 ml-2" />
+              <Link to="/sponsors" onClick={() => handleCTAClick('Become Sponsor')}>
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  rightIcon={<ArrowRight className="w-5 h-5" />}
+                  className="border-white text-white hover:bg-white hover:text-primary-600"
+                >
+                  Sponsor Kumar
+                </Button>
               </Link>
             </div>
           </motion.div>

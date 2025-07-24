@@ -158,7 +158,7 @@ const AdminDashboard: React.FC = () => {
       case 'member_signup': return 'text-green-600 bg-green-100';
       case 'donation': return 'text-blue-600 bg-blue-100';
       case 'event_registration': return 'text-purple-600 bg-purple-100';
-      case 'content_access': return 'text-orange-600 bg-orange-100';
+      case 'content_access': return 'text-orange-800 bg-orange-50';
       case 'volunteer_signup': return 'text-indigo-600 bg-indigo-100';
       default: return 'text-gray-600 bg-gray-100';
     }

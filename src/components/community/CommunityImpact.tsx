@@ -29,7 +29,7 @@ const StatCard: React.FC<StatCardProps> = ({ icon: Icon, label, value, color, de
       whileInView={{ scale: 1 }}
       viewport={{ once: true }}
       transition={{ delay: delay + 0.2, type: "spring", stiffness: 100 }}
-      className="text-3xl font-bold text-gold-200 mb-2"
+      className="text-3xl font-bold text-gold-high-contrast mb-2"
     >
       {typeof value === 'number' && value > 999 ? 
         `${(value / 1000).toFixed(1)}K` : 
@@ -38,7 +38,7 @@ const StatCard: React.FC<StatCardProps> = ({ icon: Icon, label, value, color, de
     </motion.div>
     <div className="text-gold-100 font-medium mb-2">{label}</div>
     {description && (
-      <div className="text-sm text-gold-300">{description}</div>
+      <div className="text-sm text-gold-high-contrast">{description}</div>
     )}
   </motion.div>
 );
@@ -161,7 +161,7 @@ const CommunityImpact: React.FC = () => {
           className="bg-gradient-to-br from-amber-900/70 to-red-900/70 backdrop-blur-sm rounded-2xl shadow-2xl p-8 mb-12 border border-gold-500/40"
         >
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gold-200 mb-4">Currently Active Programs</h3>
+            <h3 className="text-2xl font-bold text-gold-high-contrast mb-4">Currently Active Programs</h3>
             <p className="text-gold-100">
               These ongoing initiatives continue to serve our Oakland community every day.
             </p>

@@ -1,25 +1,103 @@
 {
-  "short_name": "Kumar Prescod",
-  "name": "Kumar Prescod - Professional Boxer",
+  "name": "Kumar Prescod Boxing - Professional Boxer",
+  "short_name": "KP Boxing",
+  "description": "Follow Kumar Prescod, 18-year-old professional boxer from Oakland, CA. Buy tickets, merchandise, and stay updated with latest fights and news.",
+  "start_url": "/?utm_source=pwa",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#dc2626",
+  "background_color": "#0f172a",
+  "scope": "/",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["sports", "entertainment", "lifestyle"],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "mailto",
+      "url": "/contact?email=%s"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Latest Fights",
+      "short_name": "Fights",
+      "description": "View Kumar's latest boxing matches and results",
+      "url": "/fights",
+      "icons": [
+        {
+          "src": "logo192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Buy Tickets",
+      "short_name": "Tickets",
+      "description": "Get tickets for upcoming boxing events",
+      "url": "/fights#tickets",
+      "icons": [
+        {
+          "src": "logo192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Shop Merchandise",
+      "short_name": "Shop",
+      "description": "Browse boxing merchandise and gear",
+      "url": "/shop",
+      "icons": [
+        {
+          "src": "logo192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Boxing Journey",
+      "short_name": "Journey",
+      "description": "Follow Kumar's professional boxing journey",
+      "url": "/journey",
+      "icons": [
+        {
+          "src": "logo192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "type": "image/x-icon",
+      "purpose": "any"
     },
     {
       "src": "logo192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "maskable any"
     },
     {
       "src": "logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "maskable any"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#dc2626",
-  "background_color": "#ffffff"
+  "prefer_related_applications": false,
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
 } 

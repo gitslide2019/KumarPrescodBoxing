@@ -16,7 +16,7 @@ const About: React.FC = () => {
     { icon: Trophy, title: "Professional Record", value: "3-0" },
     { icon: Target, title: "KO Rate", value: "100%" },
     { icon: Award, title: "National Titles", value: "9x" },
-    { icon: Users, title: "Team USA Youth", value: "Former" },
+    { icon: Users, title: "Team USA", value: "2x" },
   ];
 
   const timeline = [
@@ -26,19 +26,19 @@ const About: React.FC = () => {
       description: "Kumar Tyson Prescod was born and raised in the Hayward/Oakland area of California."
     },
     {
-      year: "2014",
+      year: "2012",
       title: "Started Boxing",
-      description: "At age 8, Kumar began training under his father Kuma Prescod, laying the foundation for greatness."
+      description: "At age 6, Kumar began training under his father Kuma Prescod, laying the foundation for greatness."
     },
     {
-      year: "2016-2023",
+      year: "2012-2023",
       title: "Amateur Dominance",
-      description: "Kumar dominated the amateur scene, winning 9 national titles and competing for Team USA youth."
+      description: "Kumar dominated the amateur scene with a 63-8 record, winning 9 national titles and competing 2x for Team USA."
     },
     {
-      year: "2024",
+      year: "2023",
       title: "Professional Debut",
-      description: "Turned professional with a TKO victory over Ernesto Gutierrez, beginning his pro journey."
+      description: "Turned professional at age 17 with a TKO victory over Ernesto Gutierrez, beginning his pro journey."
     },
     {
       year: "2024",
@@ -92,12 +92,12 @@ const About: React.FC = () => {
               <div className="space-y-4 text-lg text-secondary-700">
                 <p>
                   Born and raised in the Hayward/Oakland area, Kumar Tyson "The Raw One" Prescod discovered his passion for boxing 
-                  at the age of 8 under the guidance of his father Kuma Prescod. What started as family training quickly became a calling 
+                  at the age of 6 under the guidance of his father Kuma Prescod. What started as family training quickly became a calling 
                   that would define his legacy.
                 </p>
                 <p>
-                  After dominating the amateur scene with 9 national titles and representing Team USA youth, Kumar turned professional 
-                  at 18 with explosive results. His patient, composed style combined with powerful combinations has led to a perfect 
+                  After dominating the amateur scene with an exceptional 63-8 record, 9 national titles, and representing Team USA twice, Kumar turned professional 
+                  at 17 with explosive results. His patient, composed style combined with powerful combinations has led to a perfect 
                   3-0 record with 3 knockouts - a 100% finish rate that has the boxing world taking notice.
                 </p>
                 <p>
@@ -201,9 +201,9 @@ const About: React.FC = () => {
                 >
                   <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
                     <div className="bg-gradient-to-br from-amber-900/70 to-red-900/70 backdrop-blur-sm p-6 rounded-lg shadow-xl border border-gold-500/40">
-                      <div className="text-2xl font-bold text-gold-300 mb-2">{item.year}</div>
+                      <div className="text-2xl font-bold text-gold-high-contrast mb-2">{item.year}</div>
                       <div className="text-xl font-semibold text-gold-100 mb-2">{item.title}</div>
-                      <div className="text-gold-200">{item.description}</div>
+                      <div className="text-gold-high-contrast">{item.description}</div>
                     </div>
                   </div>
 
@@ -280,7 +280,7 @@ const About: React.FC = () => {
             className="text-center mb-12"
           >
             <h2 className="text-4xl font-bold mb-4">
-              Road to <span className="text-gold-300">Championship</span>
+              Road to <span className="text-gold-high-contrast">Championship</span>
             </h2>
             <p className="text-xl text-primary-100 max-w-3xl mx-auto">
               Kumar's comprehensive promotional strategy to reach world championship potential
@@ -294,7 +294,7 @@ const About: React.FC = () => {
                 items: [
                   "Signature \"The Raw One\" brand identity",
                   "Bay Area pride storytelling angle",
-                  "Highlight 9x national amateur titles",
+                  "Highlight 9x national titles & 63-8 amateur record",
                   "Professional hero imagery & visuals"
                 ],
                 icon: "🎯"
@@ -363,7 +363,7 @@ const About: React.FC = () => {
                 <ul className="space-y-2">
                   {strategy.items.map((item, itemIndex) => (
                     <li key={itemIndex} className="flex items-start">
-                      <span className="text-gold-300 mr-2">•</span>
+                      <span className="text-gold-high-contrast mr-2">•</span>
                       <span className="text-sm text-primary-100">{item}</span>
                     </li>
                   ))}
@@ -380,21 +380,21 @@ const About: React.FC = () => {
             className="text-center mt-12"
           >
             <p className="text-lg text-primary-100 mb-6">
-              Kumar combines amateur pedigree, raw knockout power, and a compelling Bay Area story. 
+              Kumar combines elite amateur pedigree (63-8 record, 9x National Champion, 2x Team USA), raw knockout power, and a compelling Bay Area story. 
               This comprehensive strategy positions him to rise through the rankings toward world championship glory.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
-                <span className="text-gold-300 font-semibold">Elite Amateur Pedigree</span>
+                <span className="text-gold-high-contrast font-semibold">Elite Amateur Pedigree</span>
               </div>
               <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
-                <span className="text-gold-300 font-semibold">100% KO Rate</span>
+                <span className="text-gold-high-contrast font-semibold">100% KO Rate</span>
               </div>
               <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
-                <span className="text-gold-300 font-semibold">Bay Area Pride</span>
+                <span className="text-gold-high-contrast font-semibold">Bay Area Pride</span>
               </div>
               <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
-                <span className="text-gold-300 font-semibold">World Championship Potential</span>
+                <span className="text-gold-high-contrast font-semibold">World Championship Potential</span>
               </div>
             </div>
           </motion.div>

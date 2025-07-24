@@ -6,6 +6,7 @@
 import React from 'react';
 import { Fighter } from '../../types/boxing';
 import { OptimizedImage } from '../common/OptimizedImage';
+import { designTokens } from '../../styles/design-tokens';
 
 interface FighterCardProps {
   fighter: Fighter;
@@ -110,7 +111,7 @@ const FighterCard: React.FC<FighterCardProps> = ({
             {fighter.name}
           </h3>
           {fighter.nickname && (
-            <p className={`${textSizeClasses[size].nickname} text-red-400 font-medium`}>
+            <p className={`${textSizeClasses[size].nickname} font-medium`} style={{ color: designTokens.colors.primary.championship_gold }}>
               "{fighter.nickname}"
             </p>
           )}
@@ -154,17 +155,17 @@ const FighterCard: React.FC<FighterCardProps> = ({
           <div className="text-center space-y-2">
             <div className="bg-black/60 rounded-lg p-3 backdrop-blur-sm">
               <p className={`${textSizeClasses[size].stats} text-gray-400 mb-1`}>Professional Record</p>
-              <p className={`${textSizeClasses[size].record} font-bold text-red-400`}>
+              <p className={`${textSizeClasses[size].record} font-bold`} style={{ color: designTokens.colors.primary.boxing_red }}>
                 {formatRecord(fighter.record)}
               </p>
               <div className="flex justify-center space-x-4 mt-2">
                 <div>
                   <p className="text-xs text-gray-400">KOs</p>
-                  <p className="text-sm font-bold text-yellow-400">{fighter.record.knockouts}</p>
+                  <p className="text-sm font-bold" style={{ color: designTokens.colors.primary.championship_gold }}>{fighter.record.knockouts}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-400">KO%</p>
-                  <p className="text-sm font-bold text-yellow-400">
+                  <p className="text-sm font-bold" style={{ color: designTokens.colors.primary.championship_gold }}>
                     {getKnockoutPercentage(fighter.record)}%
                   </p>
                 </div>
@@ -183,7 +184,7 @@ const FighterCard: React.FC<FighterCardProps> = ({
         {showAchievements && fighter.achievements.length > 0 && size !== 'small' && (
           <div className="mt-2">
             <p className="text-xs text-gray-400 mb-1">Latest Achievement</p>
-            <p className="text-xs text-yellow-400 font-medium line-clamp-2">
+            <p className="text-xs font-medium line-clamp-2" style={{ color: designTokens.colors.primary.championship_gold }}>
               {fighter.achievements[0]?.title}
             </p>
           </div>
@@ -192,13 +193,13 @@ const FighterCard: React.FC<FighterCardProps> = ({
 
       {/* Corner Accent */}
       <div className="absolute top-0 right-0 w-16 h-16">
-        <div className="absolute top-0 right-0 w-0 h-0 border-l-16 border-b-16 border-l-transparent border-b-red-600" />
+        <div className="absolute top-0 right-0 w-0 h-0 border-l-16 border-b-16 border-l-transparent" style={{ borderBottomColor: designTokens.colors.primary.boxing_red }} />
         <div className="absolute top-1 right-1 w-0 h-0 border-l-14 border-b-14 border-l-transparent border-b-black" />
       </div>
 
       {/* Hover Effect Overlay */}
       {onClick && (
-        <div className="absolute inset-0 bg-red-600/10 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+        <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center" style={{ backgroundColor: `${designTokens.colors.primary.boxing_red}10` }}>
           <span className="text-white font-bold text-lg">View Profile</span>
         </div>
       )}

@@ -164,7 +164,7 @@ const Sponsors: React.FC = () => {
           <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-8 text-white">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4">
-                Why Partner with <span className="text-gold-300">Kumar "The Raw One" Prescod</span>?
+                Why Partner with <span className="text-gold-high-contrast">Kumar "The Raw One" Prescod</span>?
               </h2>
               <p className="text-xl text-primary-100 max-w-3xl mx-auto">
                 Invest in the future of boxing with a proven champion who combines elite talent with authentic Bay Area roots
@@ -176,7 +176,7 @@ const Sponsors: React.FC = () => {
                 {
                   icon: Award,
                   title: "Elite Amateur Pedigree",
-                  description: "9x National Champion, Former Team USA Youth competitor with proven track record"
+                  description: "9x National Champion, 2x Team USA competitor with proven track record"
                 },
                 {
                   icon: TrendingUp,
@@ -203,7 +203,7 @@ const Sponsors: React.FC = () => {
                   className="text-center"
                 >
                   <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4">
-                    <reason.icon className="w-8 h-8 text-gold-300" />
+                    <reason.icon className="w-8 h-8 text-gold-high-contrast" />
                   </div>
                   <h3 className="text-lg font-bold mb-2">{reason.title}</h3>
                   <p className="text-sm text-primary-100">{reason.description}</p>

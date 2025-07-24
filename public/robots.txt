@@ -1,0 +1,78 @@
+# Robots.txt for Kumar Prescod Boxing Website
+# https://kumarprescod.com
+
+User-agent: *
+Allow: /
+
+# High priority pages
+Allow: /
+Allow: /about
+Allow: /fights
+Allow: /journey
+Allow: /sponsors
+
+# Shopping and commerce
+Allow: /shop
+Allow: /tickets
+
+# Media and content
+Allow: /podcast
+Allow: /images/
+Allow: /audio/
+
+# Block admin and member areas
+Disallow: /admin
+Disallow: /member
+Disallow: /login
+
+# Block checkout processes (privacy)
+Disallow: /shop/checkout
+Disallow: /tickets/checkout
+
+# Block error pages
+Disallow: /error
+Disallow: /offline
+
+# Block development files
+Disallow: /*.json$
+Disallow: /static/js/
+Disallow: /static/css/
+
+# Allow search engines to find important assets
+Allow: /manifest.json
+Allow: /favicon.ico
+Allow: /images/portraits/
+Allow: /images/fights/
+Allow: /images/training/
+
+# Sitemaps location
+Sitemap: https://kumarprescod.com/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Special instructions for different bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: bingbot  
+Allow: /
+Crawl-delay: 1
+
+User-agent: facebookexternalhit
+Allow: /
+Allow: /images/
+
+# Block aggressive crawlers
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+
+# Sports and boxing specific crawlers
+User-agent: *
+Allow: /fights/
+Allow: /about
+Allow: /journey

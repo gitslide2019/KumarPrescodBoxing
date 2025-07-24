@@ -30,28 +30,45 @@ export const kumarProfile = {
 
   // Amateur Background
   amateur: {
-    totalFights: 25,
-    wins: 22,
-    losses: 3,
+    totalFights: 71,
+    wins: 63,
+    losses: 8,
     achievements: [
+      "9x National Champion",
+      "2x Team USA Member",
       "2023 Golden Gloves Bay Area Champion",
       "2022 Junior Olympic Regional Finalist", 
       "2021 PAL Tournament Winner",
       "Oakland Youth Boxing Champion (2020, 2021, 2022)"
-    ]
+    ],
+    startAge: 6,
+    proDebut: {
+      age: 17,
+      description: "Turned professional at age 17 after dominant amateur career"
+    }
   },
 
   // Career Highlights
   careerHighlights: [
     {
+      achievement: "9x National Amateur Champion",
+      date: "2023-07-01",
+      description: "Dominated amateur boxing with nine national championship titles and exceptional 63-8 record"
+    },
+    {
+      achievement: "2x Team USA Member",
+      date: "2022-08-01",
+      description: "Selected twice to represent United States in international amateur boxing competitions"
+    },
+    {
       achievement: "Professional Debut Victory",
       date: "2024-06-15",
-      description: "First-round knockout victory in professional debut, establishing 'The Raw One' as a rising prospect"
+      description: "First-round knockout victory in professional debut at age 17, establishing 'The Raw One' as a rising prospect"
     },
     {
       achievement: "Perfect 3-0 Record",
       date: "2024-12-20",
-      description: "Three consecutive knockout victories to start professional career"
+      description: "Three consecutive knockout victories to start professional career, maintaining 100% knockout rate"
     },
     {
       achievement: "Homecoming Fight Announcement",

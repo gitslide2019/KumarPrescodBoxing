@@ -1,0 +1,769 @@
+/* Kumar Prescod Boxing - Enhanced UX Design System */
+/* Modern, accessible, and visually compelling design for professional boxing */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+/* ================================================ */
+/* ENHANCED CSS CUSTOM PROPERTIES - UX FOCUSED     */
+/* ================================================ */
+
+:root {
+  /* ====== TYPOGRAPHY SYSTEM ====== */
+  --font-display: 'Bebas Neue', 'Oswald', system-ui, sans-serif;
+  --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-boxing: 'Oswald', 'Inter', system-ui, sans-serif;
+  
+  /* Font Weights */
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+  --weight-black: 900;
+  
+  /* Font Sizes - Fluid Scale */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);
+  --text-3xl: clamp(1.875rem, 1.6rem + 1.375vw, 2.25rem);
+  --text-4xl: clamp(2.25rem, 1.9rem + 1.75vw, 3rem);
+  --text-5xl: clamp(3rem, 2.5rem + 2.5vw, 4rem);
+  --text-6xl: clamp(4rem, 3rem + 5vw, 6rem);
+  
+  /* Line Heights */
+  --leading-tight: 1.1;
+  --leading-snug: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.6;
+  --leading-loose: 1.8;
+  
+  /* Letter Spacing */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  /* ====== ENHANCED COLOR SYSTEM - HIGH CONTRAST ====== */
+  /* Primary Boxing Colors - Enhanced for Readability */
+  --primary-50: #fef2f2;
+  --primary-100: #fee2e2;
+  --primary-200: #fecaca;
+  --primary-300: #f87171;
+  --primary-400: #ef4444;
+  --primary-500: #dc2626;
+  --primary-600: #b91c1c;
+  --primary-700: #991b1b;
+  --primary-800: #7f1d1d;
+  --primary-900: #450a0a;
+  --primary-950: #1a0606;
+  
+  /* Gold Championship Colors - High Contrast Enhanced */
+  --gold-50: #fffbeb;
+  --gold-100: #fef3c7;
+  --gold-200: #fbbf24;  /* Enhanced contrast */
+  --gold-300: #f59e0b;  /* Stronger gold */
+  --gold-400: #d97706;
+  --gold-500: #b45309;
+  --gold-600: #92400e;
+  --gold-700: #78350f;
+  --gold-800: #451a03;
+  --gold-900: #1c0a00;
+  --gold-950: #0a0300;
+  
+  /* Semantic Colors - Enhanced */
+  --success-50: #f0fdf4;
+  --success-500: #22c55e;
+  --success-600: #16a34a;
+  --success-700: #15803d;
+  
+  --warning-50: #fffbeb;
+  --warning-500: #f59e0b;
+  --warning-600: #d97706;
+  --warning-700: #b45309;
+  
+  --error-50: #fef2f2;
+  --error-500: #ef4444;
+  --error-600: #dc2626;
+  --error-700: #b91c1c;
+  
+  --info-50: #eff6ff;
+  --info-500: #3b82f6;
+  --info-600: #2563eb;
+  --info-700: #1d4ed8;
+  
+  /* Neutral Scale - High Contrast */
+  --neutral-0: #ffffff;
+  --neutral-50: #fafafa;
+  --neutral-100: #f5f5f5;
+  --neutral-200: #e5e5e5;
+  --neutral-300: #d4d4d4;
+  --neutral-400: #a3a3a3;
+  --neutral-500: #737373;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: #262626;
+  --neutral-900: #171717;
+  --neutral-950: #0a0a0a;
+  
+  /* Boxing-Specific Color Applications */
+  --boxing-ring: var(--neutral-100);
+  --boxing-glove: var(--primary-600);
+  --boxing-belt: var(--gold-500);
+  --boxing-champion: linear-gradient(135deg, var(--primary-600), var(--gold-500));
+  --boxing-victory: var(--success-600);
+  --boxing-knockout: var(--primary-700);
+
+  /* ====== SPACING SYSTEM ====== */
+  --space-px: 1px;
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+  --space-40: 10rem;    /* 160px */
+  --space-48: 12rem;    /* 192px */
+  --space-56: 14rem;    /* 224px */
+  --space-64: 16rem;    /* 256px */
+  
+  /* Component Spacing */
+  --component-padding-sm: var(--space-3) var(--space-4);
+  --component-padding-md: var(--space-4) var(--space-6);
+  --component-padding-lg: var(--space-6) var(--space-8);
+  --component-padding-xl: var(--space-8) var(--space-12);
+  
+  /* Section Spacing */
+  --section-padding-y: clamp(4rem, 8vw, 8rem);
+  --section-padding-x: clamp(1rem, 4vw, 2rem);
+  
+  /* ====== BORDER RADIUS SYSTEM ====== */
+  --radius-none: 0;
+  --radius-sm: 0.125rem;   /* 2px */
+  --radius-base: 0.25rem;  /* 4px */
+  --radius-md: 0.375rem;   /* 6px */
+  --radius-lg: 0.5rem;     /* 8px */
+  --radius-xl: 0.75rem;    /* 12px */
+  --radius-2xl: 1rem;      /* 16px */
+  --radius-3xl: 1.5rem;    /* 24px */
+  --radius-full: 9999px;
+  
+  /* ====== SHADOW SYSTEM ====== */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-base: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  
+  /* Boxing-Specific Shadows */
+  --shadow-punch: 0 8px 25px -8px var(--primary-600);
+  --shadow-champion: 0 20px 40px -12px var(--gold-500);
+  --shadow-knockout: 0 25px 50px -12px var(--primary-900);
+  
+  /* ====== TRANSITION SYSTEM ====== */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-punch: 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* ====== Z-INDEX SYSTEM ====== */
+  --z-base: 0;
+  --z-docked: 10;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-banner: 1030;
+  --z-overlay: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
+  
+  /* ====== LAYOUT SYSTEM ====== */
+  --container-xs: 20rem;    /* 320px */
+  --container-sm: 24rem;    /* 384px */
+  --container-md: 28rem;    /* 448px */
+  --container-lg: 32rem;    /* 512px */
+  --container-xl: 36rem;    /* 576px */
+  --container-2xl: 42rem;   /* 672px */
+  --container-3xl: 48rem;   /* 768px */
+  --container-4xl: 56rem;   /* 896px */
+  --container-5xl: 64rem;   /* 1024px */
+  --container-6xl: 72rem;   /* 1152px */
+  --container-7xl: 80rem;   /* 1280px */
+  --container-full: 100%;
+  
+  /* Content Widths */
+  --content-width: var(--container-7xl);
+  --prose-width: var(--container-2xl);
+  --narrow-width: var(--container-lg);
+}
+
+/* ================================================ */
+/* ENHANCED BASE STYLES                             */
+/* ================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--neutral-900);
+  background-color: var(--neutral-0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ====== TYPOGRAPHY ENHANCEMENT ====== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-boxing);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+  color: var(--neutral-900);
+}
+
+h1 {
+  font-size: var(--text-6xl);
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-tight);
+}
+
+h2 {
+  font-size: var(--text-5xl);
+  font-weight: var(--weight-extrabold);
+}
+
+h3 {
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-bold);
+}
+
+h4 {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+}
+
+h5 {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+}
+
+h6 {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+}
+
+/* Display Typography */
+.display-1 {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 8vw, 8rem);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+.display-2 {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 6rem);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-tight);
+}
+
+/* Body Text */
+p {
+  margin: 0;
+  line-height: var(--leading-relaxed);
+}
+
+.text-large {
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+}
+
+.text-small {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+/* Boxing-Specific Typography */
+.boxing-title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-regular);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  background: var(--boxing-champion);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.champion-text {
+  color: var(--gold-500);
+  font-weight: var(--weight-bold);
+  text-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
+}
+
+.knockout-text {
+  color: var(--primary-600);
+  font-weight: var(--weight-extrabold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* ================================================ */
+/* ENHANCED COMPONENT SYSTEM                        */
+/* ================================================ */
+
+/* ====== BUTTON SYSTEM ====== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-boxing);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Button Sizes */
+.btn-sm {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  gap: var(--space-2);
+}
+
+.btn-md {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-base);
+  gap: var(--space-2);
+}
+
+.btn-lg {
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-lg);
+  gap: var(--space-3);
+}
+
+.btn-xl {
+  padding: var(--space-6) var(--space-12);
+  font-size: var(--text-xl);
+  gap: var(--space-3);
+}
+
+/* Button Variants */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+  color: var(--neutral-0);
+  box-shadow: var(--shadow-punch);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-700), var(--primary-800));
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-base);
+}
+
+.btn-champion {
+  background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
+  color: var(--neutral-900);
+  box-shadow: var(--shadow-champion);
+  border: 2px solid var(--gold-400);
+}
+
+.btn-champion:hover {
+  background: linear-gradient(135deg, var(--gold-400), var(--gold-500));
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary-600);
+  border: 2px solid var(--primary-600);
+}
+
+.btn-outline:hover {
+  background: var(--primary-600);
+  color: var(--neutral-0);
+  box-shadow: var(--shadow-punch);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--neutral-600);
+}
+
+.btn-ghost:hover {
+  background: var(--neutral-100);
+  color: var(--neutral-900);
+}
+
+/* ====== CARD SYSTEM ====== */
+.card {
+  background: var(--neutral-0);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--neutral-200);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: var(--neutral-300);
+}
+
+.card-header {
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--neutral-200);
+}
+
+.card-body {
+  padding: var(--space-6);
+}
+
+.card-footer {
+  padding: var(--space-6);
+  border-top: 1px solid var(--neutral-200);
+  background: var(--neutral-50);
+}
+
+/* Boxing-Specific Cards */
+.fight-card {
+  background: linear-gradient(135deg, var(--neutral-50), var(--neutral-100));
+  border: 2px solid var(--primary-200);
+  position: relative;
+}
+
+.fight-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--boxing-champion);
+}
+
+.champion-card {
+  background: linear-gradient(135deg, var(--gold-50), var(--gold-100));
+  border: 2px solid var(--gold-300);
+  box-shadow: var(--shadow-champion);
+}
+
+/* ====== FORM ELEMENTS ====== */
+.form-group {
+  margin-bottom: var(--space-6);
+}
+
+.form-label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--neutral-700);
+  margin-bottom: var(--space-2);
+}
+
+.form-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-base);
+  border: 2px solid var(--neutral-300);
+  border-radius: var(--radius-lg);
+  background: var(--neutral-0);
+  transition: all var(--transition-base);
+  font-family: var(--font-primary);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-100);
+}
+
+.form-input:invalid {
+  border-color: var(--error-500);
+}
+
+.form-input:invalid:focus {
+  box-shadow: 0 0 0 3px var(--error-100);
+}
+
+/* ====== UTILITY CLASSES ====== */
+
+/* Spacing Utilities */
+.p-0 { padding: var(--space-0); }
+.p-1 { padding: var(--space-1); }
+.p-2 { padding: var(--space-2); }
+.p-3 { padding: var(--space-3); }
+.p-4 { padding: var(--space-4); }
+.p-6 { padding: var(--space-6); }
+.p-8 { padding: var(--space-8); }
+
+.m-0 { margin: var(--space-0); }
+.m-1 { margin: var(--space-1); }
+.m-2 { margin: var(--space-2); }
+.m-3 { margin: var(--space-3); }
+.m-4 { margin: var(--space-4); }
+.m-6 { margin: var(--space-6); }
+.m-8 { margin: var(--space-8); }
+
+/* Text Utilities */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.font-light { font-weight: var(--weight-light); }
+.font-regular { font-weight: var(--weight-regular); }
+.font-medium { font-weight: var(--weight-medium); }
+.font-semibold { font-weight: var(--weight-semibold); }
+.font-bold { font-weight: var(--weight-bold); }
+.font-extrabold { font-weight: var(--weight-extrabold); }
+.font-black { font-weight: var(--weight-black); }
+
+/* Color Utilities */
+.text-primary { color: var(--primary-600); }
+.text-gold { color: var(--gold-500); }
+.text-success { color: var(--success-600); }
+.text-warning { color: var(--warning-600); }
+.text-error { color: var(--error-600); }
+
+.bg-primary { background-color: var(--primary-600); }
+.bg-gold { background-color: var(--gold-500); }
+.bg-success { background-color: var(--success-600); }
+.bg-warning { background-color: var(--warning-600); }
+.bg-error { background-color: var(--error-600); }
+
+/* Layout Utilities */
+.container {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 var(--section-padding-x);
+}
+
+.section {
+  padding: var(--section-padding-y) 0;
+}
+
+/* Responsive Utilities */
+@media (max-width: 640px) {
+  .sm\:hidden { display: none; }
+  .sm\:block { display: block; }
+}
+
+@media (max-width: 768px) {
+  .md\:hidden { display: none; }
+  .md\:block { display: block; }
+}
+
+@media (max-width: 1024px) {
+  .lg\:hidden { display: none; }
+  .lg\:block { display: block; }
+}
+
+/* ================================================ */
+/* BOXING-SPECIFIC ANIMATIONS                       */
+/* ================================================ */
+
+@keyframes punch {
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(0.95) rotate(-1deg); }
+  50% { transform: scale(1.05) rotate(1deg); }
+  75% { transform: scale(0.98) rotate(-0.5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes champion-glow {
+  0%, 100% { 
+    box-shadow: var(--shadow-champion);
+    filter: brightness(1);
+  }
+  50% { 
+    box-shadow: var(--shadow-xl), 0 0 40px var(--gold-400);
+    filter: brightness(1.1);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+.animate-punch {
+  animation: punch 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.animate-champion-glow {
+  animation: champion-glow 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ================================================ */
+/* ACCESSIBILITY ENHANCEMENTS                       */
+/* ================================================ */
+
+/* Focus Styles */
+:focus-visible {
+  outline: 3px solid var(--primary-400);
+  outline-offset: 2px;
+  border-radius: var(--radius-base);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-punch,
+  .animate-champion-glow,
+  .animate-float {
+    animation: none !important;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  :root {
+    --neutral-300: #999999;
+    --neutral-700: #333333;
+    --primary-600: #cc0000;
+    --gold-500: #cc8800;
+  }
+  
+  .btn {
+    border: 2px solid currentColor !important;
+  }
+  
+  .card {
+    border: 2px solid var(--neutral-700) !important;
+  }
+}
+
+/* ====== HIGH CONTRAST TEXT UTILITIES ====== */
+/* Enhanced readability classes for better text visibility */
+
+.text-high-contrast {
+  color: #ffffff !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  font-weight: 600;
+}
+
+.text-gold-high-contrast {
+  color: #fbbf24 !important; /* Enhanced gold */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+  font-weight: 600;
+}
+
+.text-primary-high-contrast {
+  color: #f87171 !important; /* Enhanced primary */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  font-weight: 600;
+}
+
+/* Strong overlay for better text readability */
+.overlay-strong {
+  background: rgba(0, 0, 0, 0.75) !important;
+}
+
+.overlay-text {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.9) 100%
+  ) !important;
+}
+
+/* Performance optimized animations */
+.animate-subtle {
+  animation: subtle-pulse 3s ease-in-out infinite;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* Accessible motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-subtle,
+  .animate-pulse-slow,
+  .animate-bounce-slow,
+  .animate-float {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --neutral-0: var(--neutral-900);
+    --neutral-50: var(--neutral-800);
+    --neutral-100: var(--neutral-700);
+    --neutral-200: var(--neutral-600);
+    --neutral-300: var(--neutral-500);
+    --neutral-700: var(--neutral-300);
+    --neutral-800: var(--neutral-200);
+    --neutral-900: var(--neutral-100);
+  }
+}

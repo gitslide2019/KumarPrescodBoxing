@@ -278,38 +278,246 @@ export const getVipPhotos = (): PhotoMetadata[] => {
   return allPhotos.filter(photo => photo.vipOnly);
 };
 
-// Image optimization utilities
+// Modern image format support detection
+export const detectImageFormatSupport = (): Promise<{ webp: boolean; avif: boolean }> => {
+  return new Promise((resolve) => {
+    if (typeof window === 'undefined') {
+      resolve({ webp: false, avif: false });
+      return;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 1;
+    canvas.height = 1;
+    
+    // Test WebP support
+    const webpSupport = canvas.toDataURL('image/webp').indexOf('image/webp') === 5;
+    
+    // Test AVIF support (more comprehensive check)
+    const avifImage = new Image();
+    avifImage.onload = () => {
+      resolve({ webp: webpSupport, avif: true });
+    };
+    avifImage.onerror = () => {
+      resolve({ webp: webpSupport, avif: false });
+    };
+    
+    // Test with a minimal AVIF data URL
+    avifImage.src = 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAEAAAABAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQAMAAAAABNjb2xybmNseAACAAIABoAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAAB9tZGF0EgAKCBgABogQEDQgMgkQAAAAB8dSLfI=';
+    
+    // Fallback timeout
+    setTimeout(() => {
+      resolve({ webp: webpSupport, avif: false });
+    }, 100);
+  });
+};
+
+// Generate optimized image URL with format conversion
 export const getOptimizedImageUrl = (
   filename: string, 
   category: string, 
   subcategory?: string, 
-  size: 'thumbnail' | 'medium' | 'large' | 'original' = 'original'
+  options: {
+    size?: 'thumbnail' | 'medium' | 'large' | 'original';
+    format?: 'auto' | 'webp' | 'avif' | 'jpeg' | 'png';
+    quality?: number;
+  } = {}
 ): string => {
+  const { size = 'original', format = 'auto', quality = 85 } = options;
   const baseUrl = getPhotoUrl(filename, category, subcategory);
   
-  // In a real implementation, you'd have different sizes
-  // For now, return the original but this can be extended
+  // Apply format conversion
+  let optimizedUrl = baseUrl;
+  const extension = filename.split('.').pop()?.toLowerCase();
+  
+  if (format === 'webp' && (extension === 'jpg' || extension === 'jpeg' || extension === 'png')) {
+    optimizedUrl = baseUrl.replace(new RegExp(`\.${extension}$`), '.webp');
+  } else if (format === 'avif' && (extension === 'jpg' || extension === 'jpeg' || extension === 'png')) {
+    optimizedUrl = baseUrl.replace(new RegExp(`\.${extension}$`), '.avif');
+  }
+  
+  // Apply size optimization (in production, this would generate different sized versions)
   switch (size) {
     case 'thumbnail':
-      return baseUrl; // Could be optimized 400px version
+      return optimizedUrl; // Would be 400px version with quality optimization
     case 'medium':
-      return baseUrl; // Could be optimized 800px version
+      return optimizedUrl; // Would be 800px version with quality optimization
     case 'large':
-      return baseUrl; // Could be optimized 1200px version
+      return optimizedUrl; // Would be 1200px version with quality optimization
     default:
-      return baseUrl;
+      return optimizedUrl;
   }
 };
 
-// Generate srcSet for responsive images
-export const generateSrcSet = (filename: string, category: string, subcategory?: string): string => {
-  const baseUrl = getPhotoUrl(filename, category, subcategory);
+// Generate srcSet for responsive images with modern formats
+export const generateSrcSet = (
+  filename: string, 
+  category: string, 
+  subcategory?: string,
+  options: {
+    format?: 'webp' | 'avif' | 'jpeg' | 'png';
+    quality?: number;
+    sizes?: number[];
+  } = {}
+): string => {
+  const { format = 'webp', quality = 85, sizes = [400, 800, 1200, 1600] } = options;
   
-  // In a real implementation, you'd have multiple sizes
-  return `${baseUrl} 1x, ${baseUrl} 2x`;
+  const srcSetEntries = sizes.map(size => {
+    const optimizedUrl = getOptimizedImageUrl(filename, category, subcategory, {
+      size: size <= 400 ? 'thumbnail' : size <= 800 ? 'medium' : 'large',
+      format,
+      quality
+    });
+    return `${optimizedUrl} ${size}w`;
+  });
+  
+  return srcSetEntries.join(', ');
+};
+
+// Generate picture element sources for multiple formats
+export const generatePictureSources = (
+  filename: string,
+  category: string,
+  subcategory?: string,
+  options: {
+    quality?: number;
+    sizes?: string;
+    includeAvif?: boolean;
+    includeWebp?: boolean;
+  } = {}
+): Array<{ srcSet: string; type: string; sizes?: string }> => {
+  const { quality = 85, sizes = '100vw', includeAvif = true, includeWebp = true } = options;
+  const sources: Array<{ srcSet: string; type: string; sizes?: string }> = [];
+  
+  // AVIF source (best compression)
+  if (includeAvif) {
+    sources.push({
+      srcSet: generateSrcSet(filename, category, subcategory, { format: 'avif', quality }),
+      type: 'image/avif',
+      sizes
+    });
+  }
+  
+  // WebP source (good compression, wide support)
+  if (includeWebp) {
+    sources.push({
+      srcSet: generateSrcSet(filename, category, subcategory, { format: 'webp', quality }),
+      type: 'image/webp',
+      sizes
+    });
+  }
+  
+  return sources;
+};
+
+// Preload critical images with modern formats
+export const preloadImage = (
+  filename: string,
+  category: string,
+  subcategory?: string,
+  options: {
+    format?: 'auto' | 'webp' | 'avif' | 'jpeg';
+    priority?: 'high' | 'low';
+    as?: 'image';
+  } = {}
+): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    if (typeof window === 'undefined') {
+      resolve();
+      return;
+    }
+
+    const { format = 'auto', priority = 'high' } = options;
+    let targetFormat = format;
+    
+    // Auto-detect best format
+    if (format === 'auto') {
+      detectImageFormatSupport().then(support => {
+        targetFormat = support.avif ? 'avif' : support.webp ? 'webp' : 'jpeg';
+        performPreload();
+      });
+    } else {
+      performPreload();
+    }
+    
+    function performPreload() {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = getOptimizedImageUrl(filename, category, subcategory, { format: targetFormat as any });
+      
+      if (priority === 'high') {
+        link.setAttribute('fetchpriority', 'high');
+      }
+      
+      link.onload = () => resolve();
+      link.onerror = () => reject(new Error(`Failed to preload image: ${link.href}`));
+      
+      document.head.appendChild(link);
+    }
+  });
+};
+
+// Batch image optimization utilities
+export const optimizeImageBatch = async (
+  photos: PhotoMetadata[],
+  targetFormat: 'webp' | 'avif' = 'webp'
+): Promise<PhotoMetadata[]> => {
+  const formatSupport = await detectImageFormatSupport();
+  
+  // Only optimize if format is supported
+  if ((targetFormat === 'webp' && !formatSupport.webp) || 
+      (targetFormat === 'avif' && !formatSupport.avif)) {
+    return photos;
+  }
+  
+  return photos.map(photo => ({
+    ...photo,
+    filename: photo.filename.replace(/\.(jpg|jpeg|png)$/i, `.${targetFormat}`)
+  }));
+};
+
+// Generate blur placeholder data URL
+export const generateBlurPlaceholder = (
+  width: number = 40,
+  height: number = 40,
+  colors: string[] = ['#1f2937', '#dc2626']
+): string => {
+  if (typeof window === 'undefined') return '';
+  
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return '';
+  
+  canvas.width = width;
+  canvas.height = height;
+  
+  // Create gradient with boxing theme colors
+  const gradient = ctx.createLinearGradient(0, 0, width, height);
+  colors.forEach((color, index) => {
+    gradient.addColorStop(index / (colors.length - 1), color);
+  });
+  
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, width, height);
+  
+  return canvas.toDataURL('image/jpeg', 0.1);
+};
+
+// Image loading performance utilities
+export const createImageLoadObserver = (callback: (entries: IntersectionObserverEntry[]) => void) => {
+  if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+    return null;
+  }
+  
+  return new IntersectionObserver(callback, {
+    rootMargin: '50px 0px',
+    threshold: 0.01
+  });
 };
 
 export default {
+  // Original exports
   allPhotos,
   trainingPhotos,
   equipmentPhotos,
@@ -322,6 +530,14 @@ export default {
   getPublicPhotos,
   getMemberPhotos,
   getVipPhotos,
+  
+  // Enhanced image optimization exports
+  detectImageFormatSupport,
   getOptimizedImageUrl,
-  generateSrcSet
+  generateSrcSet,
+  generatePictureSources,
+  preloadImage,
+  optimizeImageBatch,
+  generateBlurPlaceholder,
+  createImageLoadObserver
 };

@@ -80,22 +80,22 @@ const Fights: React.FC = () => {
               className="max-w-4xl mx-auto"
             >
               <h1 className="text-4xl lg:text-5xl font-bold mb-4">
-                Fight <span className="text-gold-300">Record</span>
+                Fight <span className="text-gold-high-contrast">Record</span>
               </h1>
               <p className="text-xl opacity-90 mb-8">
                 Watch Kumar "The Raw One" Prescod's professional fights and stay updated on upcoming bouts
               </p>
               <div className="flex justify-center space-x-8">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-gold-300">3-0</div>
+                  <div className="text-3xl font-bold text-gold-high-contrast">3-0</div>
                   <div className="text-sm opacity-80">Professional Record</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-gold-300">3</div>
+                  <div className="text-3xl font-bold text-gold-high-contrast">3</div>
                   <div className="text-sm opacity-80">Knockouts</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-gold-300">100%</div>
+                  <div className="text-3xl font-bold text-gold-high-contrast">100%</div>
                   <div className="text-sm opacity-80">Finish Rate</div>
                 </div>
               </div>

@@ -47,9 +47,20 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   const { ref: galleryRef, isVisible } = useScrollAnimation({ threshold: 0.1 });
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  // Initialize displayed photos
+  // Initialize displayed photos with priority loading for first few images
   useEffect(() => {
-    setDisplayedPhotos(photos.slice(0, loadedPhotos));
+    const initialPhotos = photos.slice(0, loadedPhotos);
+    
+    // Preload first few images for better perceived performance
+    if (initialPhotos.length > 0) {
+      const firstPhotos = initialPhotos.slice(0, 4);
+      firstPhotos.forEach(photo => {
+        const img = new Image();
+        img.src = getPhotoUrl(photo);
+      });
+    }
+    
+    setDisplayedPhotos(initialPhotos);
   }, [photos, loadedPhotos]);
 
   // Infinite scroll effect
@@ -73,10 +84,33 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   }, [enableInfiniteScroll, loadedPhotos, photos.length]);
 
   const getPhotoUrl = (photo: PhotoMetadata): string => {
+    // Use the optimized image URL with WebP format and appropriate sizing
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const size = isMobile ? 'medium' : 'large';
+    
     if (photo.subcategory) {
-      return `/images/${photo.category}/${photo.subcategory}/${photo.filename}`;
+      return getOptimizedImageUrl(
+        photo.filename, 
+        photo.category,
+        photo.subcategory,
+        { 
+          format: 'webp',
+          size,
+          quality: 85
+        }
+      );
     }
-    return `/images/${photo.category}/${photo.filename}`;
+    
+    return getOptimizedImageUrl(
+      photo.filename,
+      photo.category,
+      undefined,
+      {
+        format: 'webp',
+        size,
+        quality: 85
+      }
+    );
   };
 
   const getVariantClasses = () => {
@@ -284,13 +318,27 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   };
 
   return (
-    <div ref={galleryRef} className={className}>
+    <div 
+      ref={galleryRef} 
+      className={className}
+      role="region"
+      aria-label={title ? `${title} photo gallery` : "Photo gallery"}
+    >
       {title && (
         <div className="flex items-center justify-between mb-8">
-          <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
+          <h3 
+            className="text-2xl font-bold text-gray-900"
+            id="gallery-title"
+          >
+            {title}
+          </h3>
           
           {/* Layout Toggle */}
-          <div className="flex items-center space-x-2 bg-white rounded-lg shadow-sm p-1">
+          <div 
+            className="flex items-center space-x-2 bg-white rounded-lg shadow-sm p-1"
+            role="group"
+            aria-label="Gallery layout options"
+          >
             <button
               onClick={() => setCurrentLayout('grid')}
               className={`p-2 rounded transition-colors ${
@@ -334,6 +382,9 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: isVisible ? 1 : 0 }}
         transition={{ duration: 0.6 }}
+        role="grid"
+        aria-labelledby={title ? "gallery-title" : undefined}
+        aria-label={!title ? "Photo gallery grid" : undefined}
       >
         {(enableInfiniteScroll ? displayedPhotos : photos).map((photo, index) => (
           <motion.div
@@ -348,6 +399,15 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
               ${currentLayout === 'list' ? 'flex gap-4 p-4' : 'rounded-xl'}
               interactive-element
             `}
+            role="gridcell"
+            tabIndex={0}
+            aria-label={`Photo: ${photo.title}. ${photo.description}`}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openLightbox(photo, index);
+              }
+            }}
           >
             <div className={`
               relative overflow-hidden
@@ -355,15 +415,21 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
             `}>
               <OptimizedImage
                 src={getPhotoUrl(photo)}
-                alt={photo.alt}
+                alt={photo.alt || `Kumar Prescod ${photo.category} photo`}
                 title={photo.title}
+                width={currentLayout === 'list' ? 300 : 600}
+                height={currentLayout === 'list' ? 300 : 600}
                 className={`
                   w-full h-full object-cover transition-transform duration-500
-                  ${currentLayout === 'list' ? 'rounded-lg' : ''}
-                  group-hover:scale-110
+                  ${currentLayout === 'list' ? 'rounded-lg' : 'aspect-square'}
+                  group-hover:scale-105
                 `}
                 onClick={() => openLightbox(photo, index)}
-                loading="lazy"
+                loading={index < 4 ? 'eager' : 'lazy'}
+                sizes={currentLayout === 'list' 
+                  ? '(max-width: 767px) 100vw, 300px' 
+                  : `(max-width: 639px) 100vw, (max-width: 1023px) 50vw, ${100 / columns}%`
+                }
               />
 
               {/* Overlay on hover */}

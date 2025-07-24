@@ -16,6 +16,12 @@ interface AnalyticsContextType {
   trackFundingGoalView: (goalId: string, goalTitle: string) => void;
   trackCommunityEvent: (eventType: string, eventTitle: string, action: string) => void;
   trackVolunteerInterest: (eventId: string, eventTitle: string) => void;
+  // Enhanced ticket purchase tracking
+  trackTicketPurchaseIntent: (source: string, ticketType: string, price: number, membershipTier?: string) => void;
+  trackTicketPurchaseComplete: (orderId: string, amount: number, ticketType: string, source: string) => void;
+  trackTicketPurchaseSource: (source: string, component: string, page: string) => void;
+  trackTicketPurchaseFunnel: (step: string, source: string, membershipTier?: string) => void;
+  generateUTMParameters: (source: string, medium: string, campaign: string) => string;
 }
 
 const AnalyticsContext = createContext<AnalyticsContextType | undefined>(undefined);
@@ -174,6 +180,92 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children }
     }
   };
 
+  // Enhanced ticket purchase tracking methods
+  const trackTicketPurchaseIntent = (source: string, ticketType: string, price: number, membershipTier?: string) => {
+    if (isInitialized) {
+      ReactGA.event({
+        category: 'Tickets',
+        action: 'Purchase Intent',
+        label: `${source} - ${ticketType}${membershipTier ? ` - ${membershipTier}` : ''}`,
+        value: price,
+        custom_parameters: {
+          source: source,
+          ticket_type: ticketType,
+          membership_tier: membershipTier || 'none',
+          intent_timestamp: new Date().toISOString()
+        }
+      });
+    }
+  };
+
+  const trackTicketPurchaseComplete = (orderId: string, amount: number, ticketType: string, source: string) => {
+    if (isInitialized) {
+      ReactGA.event({
+        category: 'Tickets',
+        action: 'Purchase Complete',
+        label: `${source} - ${ticketType} - Order: ${orderId}`,
+        value: amount,
+        custom_parameters: {
+          order_id: orderId,
+          source: source,
+          ticket_type: ticketType,
+          completion_timestamp: new Date().toISOString()
+        }
+      });
+      
+      // Also track as ecommerce purchase
+      ReactGA.event({
+        category: 'Ecommerce',
+        action: 'Purchase',
+        value: amount,
+        label: `Ticket Purchase - ${ticketType}`
+      });
+    }
+  };
+
+  const trackTicketPurchaseSource = (source: string, component: string, page: string) => {
+    if (isInitialized) {
+      ReactGA.event({
+        category: 'Tickets',
+        action: 'Source Click',
+        label: `${page}/${component}/${source}`,
+        custom_parameters: {
+          source: source,
+          component: component,
+          page: page,
+          click_timestamp: new Date().toISOString()
+        }
+      });
+    }
+  };
+
+  const trackTicketPurchaseFunnel = (step: string, source: string, membershipTier?: string) => {
+    if (isInitialized) {
+      ReactGA.event({
+        category: 'Tickets',
+        action: 'Funnel Step',
+        label: `${step} - ${source}${membershipTier ? ` - ${membershipTier}` : ''}`,
+        custom_parameters: {
+          funnel_step: step,
+          source: source,
+          membership_tier: membershipTier || 'none',
+          step_timestamp: new Date().toISOString()
+        }
+      });
+    }
+  };
+
+  const generateUTMParameters = (source: string, medium: string, campaign: string) => {
+    const params = new URLSearchParams({
+      utm_source: source,
+      utm_medium: medium,
+      utm_campaign: campaign,
+      utm_content: 'kumar_prescod_boxing',
+      utm_term: new Date().toISOString().split('T')[0] // Date stamp
+    });
+    return params.toString();
+  };
+
   const value: AnalyticsContextType = {
     trackEvent,
     trackPageView,
@@ -188,6 +280,11 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children }
     trackFundingGoalView,
     trackCommunityEvent,
     trackVolunteerInterest,
+    trackTicketPurchaseIntent,
+    trackTicketPurchaseComplete,
+    trackTicketPurchaseSource,
+    trackTicketPurchaseFunnel,
+    generateUTMParameters,
   };
 
   return (

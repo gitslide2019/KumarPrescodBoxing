@@ -99,7 +99,7 @@ const Journey: React.FC = () => {
                 <span className="text-lg font-semibold">Photo Gallery</span>
               </div>
               <h1 className="text-4xl lg:text-5xl font-bold mb-4">
-                Kumar's <span className="text-gold-300">Journey</span>
+                Kumar's <span className="text-gold-high-contrast">Journey</span>
               </h1>
               <p className="text-xl opacity-90 max-w-3xl mx-auto">
                 Follow Kumar's path from Oakland streets to championship glory through exclusive training photos, 

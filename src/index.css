@@ -2,6 +2,85 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Enhanced UX Design System */
+@import './styles/design-system.css';
+
+/* Enhanced accessibility and focus styles */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only.focus-within\:not-sr-only:focus-within {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Enhanced focus indicators */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #dc2626;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Boxing-themed focus ring for interactive elements */
+.focus-ring:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.3), 0 0 0 6px rgba(245, 158, 11, 0.2);
+  outline: none;
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --text-primary: #000000;
+    --text-secondary: #000000;
+    --bg-primary: #ffffff;
+    --accent-primary: #cc0000;
+    --accent-gold: #cc8800;
+  }
+  
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  a:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid #000000;
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* CSS Custom Properties for Modern Boxing Theme */
 :root {
   /* Background Colors - Clean white base with subtle variations */
@@ -78,6 +157,7 @@
   --hover-overlay: rgba(0, 0, 0, 0.05);
   --active-overlay: rgba(0, 0, 0, 0.1);
   --focus-ring: rgba(239, 68, 68, 0.5);
+  --focus-ring-boxing: 0 0 0 3px rgba(220, 38, 38, 0.3), 0 0 0 6px rgba(245, 158, 11, 0.2);
   
   /* Boxing-Themed Shadows & Effects */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
@@ -163,46 +243,36 @@
     letter-spacing: -0.025em;
     font-weight: 400;
     background-color: white !important;
-    color: var(--text-primary) !important;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    font-feature-settings: 'cv11', 'ss01';
-    font-variant-ligatures: contextual;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    color: #0f172a !important;
   }
   
   /* Systematic Background Overrides */
   section {
     background-color: var(--bg-primary) !important;
-    color: var(--text-primary) !important;
   }
   
   main {
     background-color: var(--bg-primary) !important;
-    color: var(--text-primary) !important;
   }
   
   /* Keep light backgrounds as intended */
   .bg-white {
     background-color: var(--bg-primary) !important;
-    color: var(--text-primary) !important;
   }
   
   .bg-gray-50,
-  .bg-slate-50 {
+  .bg-gray-100 {
     background-color: var(--bg-secondary) !important;
-    color: var(--text-primary) !important;
   }
   
   .bg-gray-100,
-  .bg-slate-100 {
+  .bg-gray-200 {
     background-color: var(--bg-tertiary) !important;
-    color: var(--text-primary) !important;
   }
   
-  /* Text color adjustments for white theme */
+  /* Fix text color overrides - ensure proper contrast */
   .text-white {
-    color: var(--text-primary) !important;
+    color: #ffffff !important;
   }
   
   .text-gray-900,
@@ -211,60 +281,139 @@
   .text-slate-900,
   .text-slate-800,
   .text-slate-700 {
-    color: var(--text-primary) !important;
+    color: #0f172a !important;
   }
   
   .text-gray-600,
   .text-gray-500,
   .text-slate-600,
   .text-slate-500 {
-    color: var(--text-secondary) !important;
+    color: #64748b !important;
   }
   
   .text-gray-400,
   .text-gray-300,
   .text-slate-400,
   .text-slate-300 {
-    color: var(--text-muted) !important;
+    color: #94a3b8 !important;
   }
   
-  /* Additional overrides for specific text classes */
-  .text-secondary-900,
-  .text-secondary-800,
-  .text-secondary-700 {
-    color: var(--text-primary) !important;
+  /* Ensure text is visible on dark backgrounds */
+  .bg-gradient-to-br,
+  .bg-gradient-to-b,
+  .bg-slate-900,
+  .bg-neutral-900,
+  .bg-amber-900,
+  .bg-red-900 {
+    color: #ffffff !important;
   }
   
-  .text-secondary-600,
-  .text-secondary-500 {
-    color: var(--text-secondary) !important;
+  /* Fix specific text elements that should be white on dark backgrounds */
+  .bg-gradient-to-br .text-white,
+  .bg-gradient-to-b .text-white,
+  .bg-slate-900 .text-white,
+  .bg-neutral-900 .text-white,
+  .bg-amber-900 .text-white,
+  .bg-red-900 .text-white,
+  section[class*="bg-gradient"] .text-white,
+  section[class*="bg-slate"] .text-white,
+  section[class*="bg-neutral"] .text-white {
+    color: #ffffff !important;
   }
   
-  .text-secondary-400,
-  .text-secondary-300 {
-    color: var(--text-muted) !important;
+  /* Comprehensive text visibility fixes for all pages */
+  
+  /* Ensure all text on dark sections is white */
+  section[class*="bg-slate-"],
+  section[class*="bg-neutral-"],
+  section[class*="bg-gray-9"],
+  section[class*="bg-zinc-"],
+  section[class*="bg-stone-"],
+  .bg-slate-900,
+  .bg-slate-800,
+  .bg-neutral-900,
+  .bg-neutral-800,
+  .bg-gray-900,
+  .bg-gray-800 {
+    color: #ffffff !important;
+  }
+  
+  /* Fix text in cards and components on dark backgrounds */
+  .bg-slate-900 *,
+  .bg-slate-800 *,
+  .bg-neutral-900 *,
+  .bg-neutral-800 *,
+  .bg-gray-900 *,
+  .bg-gray-800 *,
+  section[class*="bg-slate-"] *,
+  section[class*="bg-neutral-"] *,
+  section[class*="bg-gray-9"] * {
+    color: inherit;
+  }
+  
+  /* Specific overrides for text classes that should be white on dark */
+  .bg-slate-900 .text-gray-600,
+  .bg-slate-900 .text-gray-500,
+  .bg-slate-900 .text-slate-600,
+  .bg-slate-900 .text-slate-500,
+  .bg-neutral-900 .text-gray-600,
+  .bg-neutral-900 .text-gray-500,
+  .bg-neutral-900 .text-slate-600,
+  .bg-neutral-900 .text-slate-500 {
+    color: #d1d5db !important;
+  }
+  
+  /* Ensure headings are visible on dark backgrounds */
+  .bg-slate-900 h1,
+  .bg-slate-900 h2,
+  .bg-slate-900 h3,
+  .bg-slate-900 h4,
+  .bg-slate-900 h5,
+  .bg-slate-900 h6,
+  .bg-neutral-900 h1,
+  .bg-neutral-900 h2,
+  .bg-neutral-900 h3,
+  .bg-neutral-900 h4,
+  .bg-neutral-900 h5,
+  .bg-neutral-900 h6,
+  section[class*="bg-slate-"] h1,
+  section[class*="bg-slate-"] h2,
+  section[class*="bg-slate-"] h3,
+  section[class*="bg-neutral-"] h1,
+  section[class*="bg-neutral-"] h2,
+  section[class*="bg-neutral-"] h3 {
+    color: #ffffff !important;
   }
   
   /* Ensure headers have proper color */
   h1, h2, h3, h4, h5, h6 {
-    color: var(--text-primary) !important;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
   }
+  
+  h1 { font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 700; }
+  h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
+  h3 { font-size: clamp(1.5rem, 3vw, 2.5rem); }
   
   /* Paragraph and body text */
   p {
-    color: var(--text-primary) !important;
+    margin-bottom: 1rem;
+    line-height: 1.7;
   }
   
-  /* Links styling for dark theme */
+  /* Links */
   a {
     color: var(--accent-primary);
-    transition: color 0.3s ease;
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
   
   a:hover {
     color: var(--accent-primary-hover);
   }
   
+  /* Ensure headers have proper color */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', system-ui, sans-serif;
     font-weight: 600;
@@ -273,9 +422,6 @@
     color: var(--color-foreground);
   }
   
-  h1 { font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 700; }
-  h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
-  h3 { font-size: clamp(1.5rem, 3vw, 2.5rem); }
   h4 { font-size: clamp(1.25rem, 2.5vw, 2rem); }
   h5 { font-size: clamp(1.125rem, 2vw, 1.5rem); }
   h6 { font-size: clamp(1rem, 1.5vw, 1.25rem); }
@@ -843,150 +989,20 @@
   }
 }
 
-/* Boxing-Themed Keyframe Animations */
-@keyframes championship-glow {
-  0%, 100% { 
-    background-position: 0% 50%; 
-    filter: brightness(1) saturate(1);
-  }
-  50% { 
-    background-position: 100% 50%; 
-    filter: brightness(1.2) saturate(1.3);
-  }
+/* Simplified animations for better performance */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-@keyframes punch-impact {
-  0% { transform: scale(1) rotate(0deg); }
-  25% { transform: scale(0.95) rotate(-1deg); }
-  50% { transform: scale(1.05) rotate(1deg); }
-  75% { transform: scale(0.98) rotate(-0.5deg); }
-  100% { transform: scale(1) rotate(0deg); }
+@keyframes slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
-@keyframes boxing-entrance {
-  0% { 
-    opacity: 0; 
-    transform: translateY(50px) scale(0.8) rotate(-5deg); 
-  }
-  50% { 
-    opacity: 0.8; 
-    transform: translateY(-10px) scale(1.05) rotate(2deg); 
-  }
-  100% { 
-    opacity: 1; 
-    transform: translateY(0) scale(1) rotate(0deg); 
-  }
-}
-
-@keyframes championship-pulse {
-  0%, 100% { 
-    box-shadow: 0 0 20px rgba(220, 38, 38, 0.3), 0 0 40px rgba(245, 158, 11, 0.2);
-    transform: scale(1);
-  }
-  50% { 
-    box-shadow: 0 0 30px rgba(220, 38, 38, 0.6), 0 0 60px rgba(245, 158, 11, 0.4);
-    transform: scale(1.02);
-  }
-}
-
-@keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(2deg); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { 
-    box-shadow: 0 0 5px rgba(var(--color-primary), 0.5),
-                0 0 10px rgba(var(--color-primary), 0.3),
-                0 0 15px rgba(var(--color-primary), 0.1);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(var(--color-primary), 0.8),
-                0 0 30px rgba(var(--color-primary), 0.6),
-                0 0 40px rgba(var(--color-primary), 0.4);
-  }
-}
-
-@keyframes bounce-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.3);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-  70% {
-    transform: scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes slide-in-left {
-  0% {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slide-in-right {
-  0% {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fade-in-up {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes scale-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@keyframes blink {
-  0%, 50% { border-color: transparent; }
-  51%, 100% { border-color: var(--color-primary); }
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
 /* Responsive Design Helpers */

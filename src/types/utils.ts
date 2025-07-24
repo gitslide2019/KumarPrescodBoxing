@@ -89,8 +89,13 @@ export interface FormState<T> {
 export type ValidationRule<T> = (value: T) => string | undefined;
 export type ValidationRules<T> = ValidationRule<T>[];
 
+// Temporarily commented out due to compilation issue
+// export interface ValidationSchema<T> {
+//   [K in keyof T]?: ValidationRules<T[K]>;
+// }
+
 export interface ValidationSchema<T> {
-  [K in keyof T]?: ValidationRules<T[K]>;
+  [key: string]: ValidationRules<any>;
 }
 
 export type ValidationResult<T> = {
@@ -528,3 +533,21 @@ export const isSuccess = <T, E>(result: Result<T, E>): result is Success<T> => r
 export const isFailure = <T, E>(result: Result<T, E>): result is Failure<E> => !result.success;
 export const isSome = <T>(option: Option<T>): option is Some<T> => option.isSome;
 export const isNone = <T>(option: Option<T>): option is None => option.isNone;
+
+// Global type declarations for analytics and tracking
+declare global {
+  interface Window {
+    gtag?: (
+      command: 'config' | 'event' | 'pageview' | 'timing_complete' | 'exception',
+      targetId: string,
+      parameters?: {
+        [key: string]: any;
+        event_category?: string;
+        event_label?: string;
+        value?: number;
+        custom_parameter?: string;
+      }
+    ) => void;
+    dataLayer?: any[];
+  }
+}

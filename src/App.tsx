@@ -21,6 +21,7 @@ import Shop from './pages/Shop';
 import Podcast from './pages/Podcast';
 import Journey from './pages/Journey';
 import Sponsors from './pages/Sponsors';
+import Contact from './pages/Contact';
 import TicketCheckout from './pages/TicketCheckout';
 import ShopCheckout from './pages/ShopCheckout';
 import MemberDashboard from './pages/member/MemberDashboard';
@@ -56,6 +57,7 @@ function App() {
             <Route path="/podcast" element={<Podcast />} />
             <Route path="/journey" element={<Journey />} />
             <Route path="/sponsors" element={<Sponsors />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/tickets/checkout" element={<TicketCheckout />} />
             <Route path="/shop/checkout" element={<ShopCheckout />} />
             <Route path="/member" element={

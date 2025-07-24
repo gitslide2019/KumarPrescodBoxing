@@ -438,3 +438,16 @@ export const TRAINING_CATEGORIES = {
   NUTRITION: 'nutrition' as const,
   RECOVERY: 'recovery' as const,
 } as const;
+
+// Re-export contact types
+export type {
+  ContactMessage,
+  ContactFormData,
+  ContactFormErrors,
+  ContactFormState,
+  InquiryType,
+  ContactStatus,
+  ContactInfo as ContactInformation,
+  ContactAnalytics,
+  ContactFormProps
+} from './contact';

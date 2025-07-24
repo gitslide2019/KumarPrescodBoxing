@@ -1,0 +1,134 @@
+{
+  "boxing_domain_servers": {
+    "sports_data": {
+      "description": "Real-time boxing statistics and fight information",
+      "endpoints": {
+        "fight_records": "https://api.boxrec.com/",
+        "rankings": "https://api.espn.com/boxing/",
+        "live_odds": "https://api.the-odds-api.com/"
+      },
+      "features": [
+        "fight_history_lookup",
+        "ranking_updates", 
+        "betting_odds_tracking",
+        "venue_information"
+      ]
+    },
+    "scheduling": {
+      "description": "Fight scheduling and venue management",
+      "integrations": [
+        "google_calendar",
+        "venue_booking_systems",
+        "broadcast_scheduling"
+      ],
+      "automated_tasks": [
+        "training_schedule_optimization",
+        "fight_camp_planning",
+        "media_obligations_tracking"
+      ]
+    },
+    "performance_analytics": {
+      "description": "Training and fight performance tracking",
+      "metrics": [
+        "punch_accuracy",
+        "power_output", 
+        "stamina_tracking",
+        "weight_management",
+        "recovery_metrics"
+      ],
+      "wearable_integration": [
+        "heart_rate_monitors",
+        "motion_sensors",
+        "sleep_tracking",
+        "nutrition_logging"
+      ]
+    },
+    "fan_engagement": {
+      "description": "Community and fan interaction tools",
+      "features": [
+        "social_media_automation",
+        "ticket_sales_analytics",
+        "merchandise_recommendations",
+        "fan_sentiment_analysis"
+      ],
+      "platforms": [
+        "instagram",
+        "twitter", 
+        "tiktok",
+        "youtube"
+      ]
+    }
+  },
+  "custom_mcp_servers": {
+    "kumar_prescod_stats": {
+      "command": "node",
+      "args": ["./mcp-servers/boxing-stats.js"],
+      "description": "Custom server for Kumar Prescod's career statistics",
+      "features": [
+        "fight_record_management",
+        "training_log_analysis",
+        "opponent_research",
+        "career_milestone_tracking"
+      ]
+    },
+    "oakland_boxing_scene": {
+      "command": "node", 
+      "args": ["./mcp-servers/local-boxing.js"],
+      "description": "Oakland boxing community and gym information",
+      "features": [
+        "local_gym_directory",
+        "upcoming_local_fights",
+        "training_partner_finder",
+        "community_events"
+      ]
+    },
+    "media_processor": {
+      "command": "node",
+      "args": ["./mcp-servers/media-processor.js"],
+      "description": "Boxing-specific media processing and tagging",
+      "features": [
+        "fight_video_analysis",
+        "technique_recognition",
+        "highlight_reel_generation",
+        "training_progress_visualization"
+      ]
+    }
+  },
+  "integration_roadmap": {
+    "phase_1": {
+      "priority": "high",
+      "timeline": "1-2 weeks",
+      "servers": ["kumar_prescod_stats", "media_processor"]
+    },
+    "phase_2": {
+      "priority": "medium", 
+      "timeline": "3-4 weeks",
+      "servers": ["oakland_boxing_scene", "sports_data_integration"]
+    },
+    "phase_3": {
+      "priority": "low",
+      "timeline": "2-3 months", 
+      "servers": ["ai_coaching_assistant", "performance_predictor"]
+    }
+  },
+  "data_sources": {
+    "official": [
+      "Nevada State Athletic Commission",
+      "California State Athletic Commission", 
+      "BoxRec.com",
+      "ESPN Boxing"
+    ],
+    "social": [
+      "Instagram API",
+      "Twitter API",
+      "YouTube API",
+      "TikTok API"
+    ],
+    "analytics": [
+      "Google Analytics",
+      "Facebook Pixel",
+      "Stripe Analytics",
+      "Firebase Analytics"
+    ]
+  }
+}

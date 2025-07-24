@@ -1,0 +1,169 @@
+{
+  "figma_magic_integration": {
+    "description": "Enhanced UI generation combining Figma MCP design extraction with Magic server AI capabilities",
+    "servers": {
+      "figma": {
+        "url": "http://127.0.0.1:3845/sse",
+        "capabilities": [
+          "design_token_extraction",
+          "component_structure_analysis", 
+          "asset_export",
+          "variant_detection"
+        ]
+      },
+      "magic": {
+        "package": "@21st-dev/magic",
+        "capabilities": [
+          "ai_component_generation",
+          "code_optimization",
+          "pattern_recognition",
+          "accessibility_enhancement"
+        ]
+      }
+    },
+    "integration_workflows": {
+      "enhanced_component_generation": {
+        "description": "Use Figma for design extraction + Magic for intelligent code generation",
+        "steps": [
+          "figma_extract_design_tokens",
+          "figma_analyze_component_structure",
+          "magic_generate_optimized_code",
+          "magic_add_accessibility_features",
+          "magic_optimize_performance"
+        ],
+        "command_template": "Extract {component_name} from Figma using design tokens, then use Magic to generate optimized React TypeScript component with accessibility and performance enhancements"
+      },
+      "design_system_sync": {
+        "description": "Synchronize Figma design system with Magic-generated components",
+        "steps": [
+          "figma_extract_all_tokens",
+          "magic_analyze_component_patterns",
+          "magic_generate_consistent_variants",
+          "validate_design_consistency"
+        ]
+      },
+      "responsive_generation": {
+        "description": "Combine Figma breakpoints with Magic responsive intelligence",
+        "steps": [
+          "figma_extract_responsive_variants",
+          "magic_analyze_responsive_patterns",
+          "magic_generate_mobile_first_code",
+          "optimize_for_boxing_content"
+        ]
+      }
+    },
+    "boxing_specific_enhancements": {
+      "fighter_components": {
+        "base_extraction": "figma",
+        "enhancements": [
+          "magic_add_fight_record_logic",
+          "magic_optimize_image_loading",
+          "magic_add_social_sharing",
+          "magic_generate_variants"
+        ]
+      },
+      "training_dashboards": {
+        "base_extraction": "figma",
+        "enhancements": [
+          "magic_add_data_visualization",
+          "magic_optimize_chart_performance",
+          "magic_add_interactive_filters",
+          "magic_generate_responsive_grid"
+        ]
+      },
+      "e_commerce_components": {
+        "base_extraction": "figma",
+        "enhancements": [
+          "magic_add_cart_functionality",
+          "magic_optimize_checkout_flow",
+          "magic_add_payment_integration",
+          "magic_generate_product_variants"
+        ]
+      }
+    },
+    "quality_enhancements": {
+      "accessibility": {
+        "figma_role": "Extract semantic structure and color contrast data",
+        "magic_role": "Generate ARIA labels, keyboard navigation, and screen reader support"
+      },
+      "performance": {
+        "figma_role": "Provide asset specifications and layout requirements",
+        "magic_role": "Optimize bundle size, lazy loading, and image compression"
+      },
+      "type_safety": {
+        "figma_role": "Define component variants and states",
+        "magic_role": "Generate comprehensive TypeScript interfaces and validation"
+      }
+    }
+  },
+  "command_examples": {
+    "basic_integration": [
+      "Extract FighterCard from Figma and enhance with Magic for optimal performance and accessibility",
+      "Use Figma design tokens to create FightPoster, then Magic to add dynamic countdown and ticket integration",
+      "Generate TrainingGrid from Figma layout with Magic-powered filtering and data visualization"
+    ],
+    "advanced_workflows": [
+      "Create complete fighter profile system: Figma extraction + Magic enhancement for responsive design, state management, and API integration",
+      "Build e-commerce checkout flow: Figma UI extraction + Magic business logic, validation, and Stripe integration",
+      "Generate training dashboard: Figma visual design + Magic data processing, chart optimization, and real-time updates"
+    ],
+    "design_system_commands": [
+      "Sync Figma design system with Magic-generated component library for consistency",
+      "Update all boxing components using latest Figma tokens with Magic optimization passes",
+      "Generate comprehensive style guide from Figma designs with Magic documentation generation"
+    ]
+  },
+  "optimization_strategies": {
+    "server_coordination": {
+      "parallel_processing": "Use Figma and Magic simultaneously for faster generation",
+      "data_sharing": "Pass Figma design tokens directly to Magic for consistent styling",
+      "context_preservation": "Maintain design context across server interactions"
+    },
+    "caching": {
+      "figma_designs": "Cache extracted design tokens and component structures",
+      "magic_patterns": "Store frequently used Magic enhancements and optimizations",
+      "generated_code": "Cache complete component generations for reuse"
+    },
+    "validation": {
+      "design_fidelity": "Ensure generated components match Figma designs",
+      "code_quality": "Validate TypeScript compilation and ESLint compliance",
+      "accessibility": "Test WCAG compliance and screen reader compatibility",
+      "performance": "Benchmark component performance and bundle impact"
+    }
+  },
+  "boxing_domain_intelligence": {
+    "context_awareness": {
+      "fight_terminology": "Magic understands boxing terms and generates appropriate interfaces",
+      "weight_classes": "Automatic color coding and styling for different weight divisions",
+      "training_concepts": "Intelligent component generation for boxing training workflows"
+    },
+    "data_patterns": {
+      "fight_records": "Standard interfaces for win/loss/draw records with proper typing",
+      "training_metrics": "Consistent data structures for workout tracking and progress",
+      "event_management": "Proper scheduling, venue, and ticket management interfaces"
+    },
+    "ui_patterns": {
+      "boxing_aesthetics": "Magic learns boxing website design patterns for consistent generation",
+      "sports_interactions": "Fighting game-inspired animations and transitions",
+      "fan_engagement": "Social features optimized for boxing community interaction"
+    }
+  },
+  "monitoring_and_analytics": {
+    "generation_metrics": {
+      "figma_extraction_time": "Track time to extract components from Figma",
+      "magic_enhancement_time": "Monitor Magic processing duration",
+      "total_workflow_time": "Complete design-to-code generation time",
+      "quality_scores": "Rate generated component quality and accuracy"
+    },
+    "usage_patterns": {
+      "most_requested_components": "Track frequently generated component types",
+      "enhancement_preferences": "Monitor which Magic features are most valuable",
+      "error_rates": "Identify common generation failures and improvements"
+    },
+    "continuous_improvement": {
+      "feedback_loops": "Collect feedback on generated components for model improvement",
+      "pattern_learning": "Help Magic learn boxing-specific design patterns over time",
+      "automation_opportunities": "Identify workflows that can be further automated"
+    }
+  }
+}
